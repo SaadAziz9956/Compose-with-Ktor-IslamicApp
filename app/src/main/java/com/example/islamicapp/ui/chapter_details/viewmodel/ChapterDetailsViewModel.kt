@@ -4,11 +4,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensemanagment.repository.ChapterDetailsRepository
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.response.network.chapter_detail_response.ChapterInfo
-import com.example.expensemanagment.util.DataState
-import com.example.expensemanagment.util.EventHandler
+import com.example.islamicapp.repository.ChapterDetailsRepository
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.response.network.chapter_detail_response.ChapterInfo
+import com.example.islamicapp.util.DataState
+import com.example.islamicapp.util.EventHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

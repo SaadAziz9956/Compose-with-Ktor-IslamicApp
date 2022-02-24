@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.expensemanagment.ui.splash.viewmodel.SplashViewModel
-import com.example.expensemanagment.ui.theme.IslamicAppTheme
-import com.example.expensemanagment.util.EventHandler
-import com.example.expensemanagment.R
+import com.example.islamicapp.ui.splash.viewmodel.SplashViewModel
+import com.example.islamicapp.ui.theme.IslamicAppTheme
+import com.example.islamicapp.util.EventHandler
+import com.example.islamicapp.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest

@@ -20,11 +20,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expensemanagment.R
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.ui.theme.IslamicAppTheme
-import com.example.expensemanagment.ui.theme.LightBackground
-import com.example.expensemanagment.ui.theme.MidGrey
+import com.example.islamicapp.R
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.ui.theme.IslamicAppTheme
+import com.example.islamicapp.ui.theme.LightBackground
+import com.example.islamicapp.ui.theme.MidGrey
 
 @Composable
 fun ColumnItem(item: Surah) {

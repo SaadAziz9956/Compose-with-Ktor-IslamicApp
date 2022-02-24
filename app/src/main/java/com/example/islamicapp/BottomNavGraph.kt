@@ -4,11 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.expensemanagment.screens.ReportScreen
-import com.example.expensemanagment.screens.TransactionScreen
-import com.example.expensemanagment.screens.dashboard.DashboardScreen
-import com.example.expensemanagment.ui.chapters.MainChapterScreen
-import com.example.expensemanagment.ui.main.screens.MainScreen
+import com.example.islamicapp.ui.chapters.MainChapterScreen
+import com.example.islamicapp.ui.main.screens.MainScreen
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {

@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.expensemanagment.response.network.chapter_detail_response.ChapterInfo
-import com.example.expensemanagment.ui.chapter_details.components.ChapterDetailScreen
-import com.example.expensemanagment.ui.chapter_details.viewmodel.ChapterDetailsViewModel
-import com.example.expensemanagment.ui.theme.IslamicAppTheme
-import com.example.expensemanagment.util.EventHandler
+import com.example.islamicapp.response.network.chapter_detail_response.ChapterInfo
+import com.example.islamicapp.ui.chapter_details.components.ChapterDetailScreen
+import com.example.islamicapp.ui.chapter_details.viewmodel.ChapterDetailsViewModel
+import com.example.islamicapp.ui.theme.IslamicAppTheme
+import com.example.islamicapp.util.EventHandler
 import com.example.islamicapp.Constants.CHAPTER_NAME
 import com.example.islamicapp.Constants.CHAPTER_NO
 import dagger.hilt.android.AndroidEntryPoint

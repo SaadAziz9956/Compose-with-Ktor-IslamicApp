@@ -3,7 +3,7 @@ package com.example.islamicapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.expensemanagment.ui.theme.IslamicAppTheme
+import com.example.islamicapp.ui.theme.IslamicAppTheme
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

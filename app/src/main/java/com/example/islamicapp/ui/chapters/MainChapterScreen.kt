@@ -13,12 +13,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.expensemanagment.R
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.ui.chapters.components.ChaptersScreen
-import com.example.expensemanagment.ui.chapters.viewmodel.ChapterViewModel
-import com.example.expensemanagment.ui.theme.MidGrey
-import com.example.expensemanagment.util.EventHandler
+import com.example.islamicapp.R
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.ui.chapters.components.ChaptersScreen
+import com.example.islamicapp.ui.chapters.viewmodel.ChapterViewModel
+import com.example.islamicapp.ui.theme.MidGrey
+import com.example.islamicapp.util.EventHandler
 import timber.log.Timber
 
 @Composable

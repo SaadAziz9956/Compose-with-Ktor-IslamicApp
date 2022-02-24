@@ -1,9 +1,9 @@
 package com.example.islamicapp.repository
 
 
-import com.example.expensemanagment.response.network.KtorInterface
-import com.example.expensemanagment.response.network.chapter_detail_response.ChapterInfo
-import com.example.expensemanagment.util.DataState
+import com.example.islamicapp.response.network.KtorInterface
+import com.example.islamicapp.response.network.chapter_detail_response.ChapterInfo
+import com.example.islamicapp.util.DataState
 import io.ktor.client.features.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

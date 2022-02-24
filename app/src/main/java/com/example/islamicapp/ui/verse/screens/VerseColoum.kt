@@ -21,10 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.expensemanagment.R
-import com.example.expensemanagment.response.local.book_response.Ayah
-import com.example.expensemanagment.ui.theme.*
-import com.example.expensemanagment.ui.verse.viewmodel.VerseViewModel
+import com.example.islamicapp.R
+import com.example.islamicapp.response.local.book_response.Ayah
+import com.example.islamicapp.ui.theme.*
+import com.example.islamicapp.ui.verse.viewmodel.VerseViewModel
 
 @Composable
 fun VerseColoum(

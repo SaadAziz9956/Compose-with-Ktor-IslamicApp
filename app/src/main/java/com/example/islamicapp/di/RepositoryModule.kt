@@ -1,9 +1,9 @@
 package com.example.islamicapp.di
 
-import com.example.expensemanagment.App
-import com.example.expensemanagment.repository.*
-import com.example.expensemanagment.response.network.KtorInterface
-import com.example.expensemanagment.room.dao.Daos
+import com.example.islamicapp.App
+import com.example.islamicapp.repository.*
+import com.example.islamicapp.response.network.KtorInterface
+import com.example.islamicapp.room.dao.Daos
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

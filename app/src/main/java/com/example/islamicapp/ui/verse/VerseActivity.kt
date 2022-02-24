@@ -17,11 +17,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.ui.theme.IslamicAppTheme
-import com.example.expensemanagment.ui.verse.screens.MainScreenVerse
-import com.example.expensemanagment.ui.verse.viewmodel.VerseViewModel
-import com.example.expensemanagment.util.EventHandler
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.ui.theme.IslamicAppTheme
+import com.example.islamicapp.ui.verse.screens.MainScreenVerse
+import com.example.islamicapp.ui.verse.viewmodel.VerseViewModel
+import com.example.islamicapp.util.EventHandler
 import com.example.islamicapp.Constants.CHAPTER
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers

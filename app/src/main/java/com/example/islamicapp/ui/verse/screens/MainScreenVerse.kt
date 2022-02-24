@@ -2,7 +2,7 @@ package com.example.islamicapp.ui.verse.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.*
-import com.example.expensemanagment.response.local.book_response.Surah
+import com.example.islamicapp.response.local.book_response.Surah
 
 @Composable
 fun MainScreenVerse(

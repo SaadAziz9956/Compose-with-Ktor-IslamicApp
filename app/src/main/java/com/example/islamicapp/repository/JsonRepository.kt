@@ -1,7 +1,7 @@
 package com.example.islamicapp.repository
 
 import android.content.Context
-import com.example.expensemanagment.response.local.book_response.Surah
+import com.example.islamicapp.response.local.book_response.Surah
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay

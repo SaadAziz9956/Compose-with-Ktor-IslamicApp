@@ -1,7 +1,7 @@
 package com.example.islamicapp.response.network
 
-import com.example.expensemanagment.response.local.book_response.BookResponse
-import com.example.expensemanagment.response.network.chapter_detail_response.ChapterDetailResponse
+import com.example.islamicapp.response.local.book_response.BookResponse
+import com.example.islamicapp.response.network.chapter_detail_response.ChapterDetailResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

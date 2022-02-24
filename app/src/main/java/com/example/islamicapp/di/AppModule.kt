@@ -1,9 +1,9 @@
 package com.example.islamicapp.di
 
 import android.content.Context
-import com.example.expensemanagment.App
-import com.example.expensemanagment.room.AppDatabase
-import com.example.expensemanagment.room.dao.Daos
+import com.example.islamicapp.App
+import com.example.islamicapp.room.AppDatabase
+import com.example.islamicapp.room.dao.Daos
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

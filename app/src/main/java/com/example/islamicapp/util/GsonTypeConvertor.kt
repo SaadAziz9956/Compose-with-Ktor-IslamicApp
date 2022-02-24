@@ -1,7 +1,7 @@
 package com.example.islamicapp.util
 
 import androidx.room.TypeConverter
-import com.example.expensemanagment.response.local.book_response.Ayah
+import com.example.islamicapp.response.local.book_response.Ayah
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

@@ -9,9 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.expensemanagment.response.local.book_response.Ayah
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.ui.verse.viewmodel.VerseViewModel
+import com.example.islamicapp.response.local.book_response.Ayah
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.ui.verse.viewmodel.VerseViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

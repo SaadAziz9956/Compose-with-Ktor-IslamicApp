@@ -1,7 +1,7 @@
 package com.example.islamicapp.room.dao
 
 import androidx.room.*
-import com.example.expensemanagment.room.entity.PrayerTimingEntity
+import com.example.islamicapp.room.entity.PrayerTimingEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

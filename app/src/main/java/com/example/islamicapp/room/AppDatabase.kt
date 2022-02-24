@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.room.dao.ChaptersDao
-import com.example.expensemanagment.room.dao.TimingDao
-import com.example.expensemanagment.room.entity.PrayerTimingEntity
-import com.example.expensemanagment.util.GsonTypeConvertor
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.room.dao.ChaptersDao
+import com.example.islamicapp.room.dao.TimingDao
+import com.example.islamicapp.room.entity.PrayerTimingEntity
+import com.example.islamicapp.util.GsonTypeConvertor
 
 
 @Database(

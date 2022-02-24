@@ -22,13 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.expensemanagment.R
-import com.example.expensemanagment.response.network.chapter_detail_response.ChapterInfo
-import com.example.expensemanagment.ui.chapter_details.viewmodel.ChapterDetailsViewModel
-import com.example.expensemanagment.ui.theme.CardBackgroundGradientTwo
-import com.example.expensemanagment.ui.theme.IslamicAppTheme
-import com.example.expensemanagment.ui.theme.MidGrey
-import com.example.expensemanagment.ui.theme.ToolbarColor
+import com.example.islamicapp.R
+import com.example.islamicapp.response.network.chapter_detail_response.ChapterInfo
+import com.example.islamicapp.ui.chapter_details.viewmodel.ChapterDetailsViewModel
+import com.example.islamicapp.ui.theme.CardBackgroundGradientTwo
+import com.example.islamicapp.ui.theme.IslamicAppTheme
+import com.example.islamicapp.ui.theme.MidGrey
+import com.example.islamicapp.ui.theme.ToolbarColor
 import timber.log.Timber
 import kotlin.math.min
 

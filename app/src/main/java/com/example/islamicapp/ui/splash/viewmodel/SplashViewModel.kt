@@ -3,10 +3,10 @@ package com.example.islamicapp.ui.splash.viewmodel
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensemanagment.App
-import com.example.expensemanagment.repository.JsonRepository
-import com.example.expensemanagment.ui.main.MainActivity
-import com.example.expensemanagment.util.EventHandler
+import com.example.islamicapp.App
+import com.example.islamicapp.repository.JsonRepository
+import com.example.islamicapp.ui.main.MainActivity
+import com.example.islamicapp.util.EventHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

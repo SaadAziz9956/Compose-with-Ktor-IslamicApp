@@ -15,11 +15,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.expensemanagment.R
-import com.example.expensemanagment.response.local.book_response.Ayah
-import com.example.expensemanagment.ui.theme.CardBackgroundGradientTwo
-import com.example.expensemanagment.ui.theme.LightBackground
-import com.example.expensemanagment.ui.verse.viewmodel.VerseViewModel
+import com.example.islamicapp.R
+import com.example.islamicapp.response.local.book_response.Ayah
+import com.example.islamicapp.ui.theme.CardBackgroundGradientTwo
+import com.example.islamicapp.ui.theme.LightBackground
+import com.example.islamicapp.ui.verse.viewmodel.VerseViewModel
 
 @Composable
 fun BottomSheet(ayah: Ayah?) {

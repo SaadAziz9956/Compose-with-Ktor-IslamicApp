@@ -23,10 +23,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expensemanagment.ui.main.MainActivity
-import com.example.expensemanagment.ui.theme.CardBackgroundGradientTwo
-import com.example.expensemanagment.ui.theme.IslamicAppTheme
-import com.example.expensemanagment.ui.theme.LightBackground
+import com.example.islamicapp.ui.main.MainActivity
+import com.example.islamicapp.ui.theme.CardBackgroundGradientTwo
+import com.example.islamicapp.ui.theme.IslamicAppTheme
+import com.example.islamicapp.ui.theme.LightBackground
 import timber.log.Timber
 
 

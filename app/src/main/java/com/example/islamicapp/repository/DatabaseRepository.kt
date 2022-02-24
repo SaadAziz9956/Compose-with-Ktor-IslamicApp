@@ -1,8 +1,8 @@
 package com.example.islamicapp.repository
 
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.room.entity.PrayerTimingEntity
-import com.example.expensemanagment.room.dao.Daos
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.room.entity.PrayerTimingEntity
+import com.example.islamicapp.room.dao.Daos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.expensemanagment.ui.main.viewmodel.MainViewModel
-import com.example.expensemanagment.ui.permission.LocationPermissionActivity
-import com.example.expensemanagment.ui.theme.AppBackground
+import com.example.islamicapp.ui.main.viewmodel.MainViewModel
+import com.example.islamicapp.ui.permission.LocationPermissionActivity
+import com.example.islamicapp.ui.theme.AppBackground
 
 @Composable
 fun MainScreen() {

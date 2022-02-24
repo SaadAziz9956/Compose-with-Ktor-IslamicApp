@@ -3,8 +3,8 @@ package com.example.islamicapp.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.expensemanagment.BottomNavScreen
-import com.example.expensemanagment.ui.theme.IslamicAppTheme
+import com.example.islamicapp.BottomNavScreen
+import com.example.islamicapp.ui.theme.IslamicAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,7 +1,7 @@
 package com.example.islamicapp.room.dao
 
 import androidx.room.*
-import com.example.expensemanagment.response.local.book_response.Surah
+import com.example.islamicapp.response.local.book_response.Surah
 import kotlinx.coroutines.flow.Flow
 
 @Dao

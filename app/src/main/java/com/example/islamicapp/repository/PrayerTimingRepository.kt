@@ -3,10 +3,10 @@ package com.example.islamicapp.repository
 import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.example.expensemanagment.response.network.KtorInterface
-import com.example.expensemanagment.response.network.prayer_timing.PrayerTiming
-import com.example.expensemanagment.room.entity.PrayerTimingEntity
-import com.example.expensemanagment.util.DataState
+import com.example.islamicapp.response.network.KtorInterface
+import com.example.islamicapp.response.network.prayer_timing.PrayerTiming
+import com.example.islamicapp.room.entity.PrayerTimingEntity
+import com.example.islamicapp.util.DataState
 import io.ktor.client.features.*
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber

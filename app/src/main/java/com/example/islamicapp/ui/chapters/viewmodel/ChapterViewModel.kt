@@ -4,10 +4,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensemanagment.App
-import com.example.expensemanagment.repository.DatabaseRepository
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.util.EventHandler
+import com.example.islamicapp.App
+import com.example.islamicapp.repository.DatabaseRepository
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.util.EventHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn

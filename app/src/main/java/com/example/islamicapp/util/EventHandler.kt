@@ -1,8 +1,8 @@
 package com.example.islamicapp.util
 
 import android.content.Intent
-import com.example.expensemanagment.response.local.book_response.Ayah
-import com.example.expensemanagment.response.local.book_response.Surah
+import com.example.islamicapp.response.local.book_response.Ayah
+import com.example.islamicapp.response.local.book_response.Surah
 
 
 sealed class EventHandler {

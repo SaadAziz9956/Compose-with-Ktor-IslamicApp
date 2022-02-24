@@ -10,8 +10,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.expensemanagment.response.local.book_response.Surah
-import com.example.expensemanagment.ui.verse.VerseActivity
+import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.ui.verse.VerseActivity
 import com.example.islamicapp.Constants.CHAPTER
 
 @Composable
