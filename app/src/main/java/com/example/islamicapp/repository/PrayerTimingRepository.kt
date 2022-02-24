@@ -1,6 +1,5 @@
 package com.example.islamicapp.repository
 
-import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.example.islamicapp.response.network.KtorInterface
@@ -13,7 +12,6 @@ import timber.log.Timber
 
 class PrayerTimingRepository(
     private val client: KtorInterface,
-    private val context: Context,
     private val dbRepo: DatabaseRepository
 ) {
 
@@ -22,19 +20,19 @@ class PrayerTimingRepository(
 
     suspend fun prayerTimingRequest(chapNo: String) {
         try {
-            val getPrayerTIming = client.getPrayerTiming(chapNo)
-            _response.value = DataState.Success(getPrayerTIming)
+            val getPrayerTiming = client.getPrayerTiming(chapNo)
+            _response.value = DataState.Success(getPrayerTiming)
         } catch (e: Exception) {
-            Timber.d("Exception: ${e}")
+            Timber.d("Exception: $e")
             _response.value = DataState.Error(e)
         } catch (e: RedirectResponseException) {
-            Timber.d("Exception: ${e}")
+            Timber.d("Exception: $e")
             _response.value = DataState.Error(e)
         } catch (e: ClientRequestException) {
-            Timber.d("Exception: ${e}")
+            Timber.d("Exception: $e")
             _response.value = DataState.Error(e)
         } catch (e: ServerResponseException) {
-            Timber.d("Exception: ${e}")
+            Timber.d("Exception: $e")
             _response.value = DataState.Error(e)
         }
     }
@@ -44,12 +42,8 @@ class PrayerTimingRepository(
         Timber.d("Inserted in db : $insertPrayerTiming")
     }
 
-    fun getFromDB(): Flow<List<PrayerTimingEntity>?> {
-        return dbRepo.getPrayerTiming()
-    }
-
-    suspend fun deleteDb() {
-        dbRepo.deletePrayerTiming()
+    fun getFromDB(city: String?): Flow<List<PrayerTimingEntity>?> {
+        return dbRepo.getPrayerTiming(city)
     }
 
 }

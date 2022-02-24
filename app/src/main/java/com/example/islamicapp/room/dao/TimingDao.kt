@@ -10,8 +10,8 @@ interface TimingDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPrayerTiming(prayerTiming: PrayerTimingEntity): Long?
 
-    @Query("SELECT * FROM prayertimingentity")
-    fun getPrayerTiming(): Flow<List<PrayerTimingEntity>?>
+    @Query("SELECT * FROM prayertimingentity WHERE city = :city")
+    fun getPrayerTiming(city: String?): Flow<List<PrayerTimingEntity>?>
 
     @Update
     suspend fun updatePrayerTiming(prayerTiming: PrayerTimingEntity): Int

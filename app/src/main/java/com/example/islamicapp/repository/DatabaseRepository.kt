@@ -29,27 +29,14 @@ class DatabaseRepository(
         }
     }
 
-    suspend fun updateSurah(chapter: Surah): Int {
-        return dao.chapterDao.updateChapter(chapter)
-    }
-
-    fun getSpecificVerse(number: Int): Flow<Surah> {
-        return dao.chapterDao.getSpecificChapter(number)
-    }
-
     suspend fun insertPrayerTiming(timing: PrayerTimingEntity): Long? {
         return withContext(Dispatchers.IO) {
             dao.prayerTiming.insertPrayerTiming(timing)
         }
     }
 
-    fun getPrayerTiming(): Flow<List<PrayerTimingEntity>?> {
-        return dao.prayerTiming.getPrayerTiming()
+    fun getPrayerTiming(city: String?): Flow<List<PrayerTimingEntity>?> {
+        return dao.prayerTiming.getPrayerTiming(city)
     }
 
-    suspend fun deletePrayerTiming(): Int {
-        return withContext(Dispatchers.IO) {
-            dao.prayerTiming.deletePrayerTiming()
-        }
-    }
 }

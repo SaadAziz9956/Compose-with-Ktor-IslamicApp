@@ -1,4 +1,5 @@
-package com.example.islamicapp
+package com.example.islamicapp.ui.main.screens
+
 
 sealed class BottomBarScreens(
     val route: String,
