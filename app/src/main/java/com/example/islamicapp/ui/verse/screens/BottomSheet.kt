@@ -1,0 +1,72 @@
+package com.example.islamicapp.ui.verse.screens
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.expensemanagment.R
+import com.example.expensemanagment.response.local.book_response.Ayah
+import com.example.expensemanagment.ui.theme.CardBackgroundGradientTwo
+import com.example.expensemanagment.ui.theme.LightBackground
+import com.example.expensemanagment.ui.verse.viewmodel.VerseViewModel
+
+@Composable
+fun BottomSheet(ayah: Ayah?) {
+
+    var text by remember {
+        mutableStateOf("Verse")
+    }
+
+    ayah?.text?.let {
+        text = it
+    }
+
+    val viewModel: VerseViewModel = hiltViewModel()
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .background(
+                    color = CardBackgroundGradientTwo,
+                    shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
+                )
+                .padding(
+                    horizontal = 15.dp,
+                    vertical = 10.dp
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
+        ) {
+            Text(
+                text = text,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(end = 20.dp),
+                textAlign = TextAlign.End,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = LightBackground
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_pause), contentDescription = "",
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        viewModel.pauseAudio()
+                    }
+            )
+        }
+
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.ExpenseManagment" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:statusBarColor">@color/purple_700</item>
+    </style>
+
+    <style name="HideStatusBar" parent="android:Theme.Material.Light.NoActionBar.Fullscreen">
+        <item name="android:statusBarColor">@color/purple_700</item>
+    </style>
+
+</resources>
