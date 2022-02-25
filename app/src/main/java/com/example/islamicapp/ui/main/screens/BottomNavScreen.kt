@@ -3,10 +3,7 @@ package com.example.islamicapp.ui.main.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,8 +15,8 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.islamicapp.ui.theme.MidGrey
-import com.example.islamicapp.ui.theme.Yellow
+import com.example.islamicapp.ui.theme.CardBackgroundGradientTwo
+import com.example.islamicapp.ui.theme.LightGrey
 
 @Composable
 fun BottomNavScreen() {
@@ -81,8 +78,9 @@ fun RowScope.AddItems(
                 modifier = Modifier.size(20.dp),
             )
         },
-        selectedContentColor = Yellow,
-        unselectedContentColor = MidGrey,
+        label = { Text(screen.title) },
+        selectedContentColor = CardBackgroundGradientTwo,
+        unselectedContentColor = LightGrey,
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
         } == true,

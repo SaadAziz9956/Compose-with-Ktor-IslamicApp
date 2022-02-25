@@ -42,11 +42,10 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideNetworkRepository(
-        context: App,
         dbRepo: DatabaseRepository,
         client: KtorInterface
     ): PrayerTimingRepository {
-        return PrayerTimingRepository(client, context, dbRepo)
+        return PrayerTimingRepository(client, dbRepo)
     }
     
 }

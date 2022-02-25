@@ -106,7 +106,11 @@ constructor(
                     Timber.d("City Name: $city")
                     Timber.d(" DDD lat: $lat,  longitude: $lng")
                 } catch (e: Exception) {
-                    Toast.makeText(context, "${e.message} Check internet connection", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        "${e.message} Check internet connection",
+                        Toast.LENGTH_LONG
+                    ).show()
                     Timber.d("Exception: ${e.message}")
                     e.printStackTrace()
                 }
@@ -224,7 +228,6 @@ constructor(
                 _currentDay.value = "Saturday"
             }
         }
-
         val asr = "${prayerTiming.gregorian} ${prayerTiming.Asr}"
         val dhuhr = "${prayerTiming.gregorian} ${prayerTiming.Dhuhr}"
         val fajr = "${prayerTiming.gregorian} ${prayerTiming.Fajr}"
@@ -232,51 +235,70 @@ constructor(
         val maghrib = "${prayerTiming.gregorian} ${prayerTiming.Maghrib}"
         val isha = "${prayerTiming.gregorian} ${prayerTiming.Isha}"
         val islamicDate = prayerTiming.hijri
-        val midNight = "${prayerTiming.gregorian} ${prayerTiming.Midnight}"
+        val midNight = "${prayerTimingNextDay.gregorian} ${prayerTiming.Midnight}"
         val sunRise = "${prayerTiming.gregorian} ${prayerTiming.Sunrise}"
 
-        val currentTime = System.currentTimeMillis()
-        val testDate = SimpleDateFormat("yyyy-MM-dd")
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
-        val date = Date(currentTime)
-        val tomorrowTime = testDate.format(date) + " " + "11:59:59"
-        val todayTime = simpleDateFormat.format(date)
-        val newTime = simpleDateFormat.parse(todayTime)
-        val fajrTime = simpleDateFormat.parse(fajr)
-        val dhuhrTime = simpleDateFormat.parse(dhuhr)
-        val asrTime = simpleDateFormat.parse(asr)
-        val maghribTime = simpleDateFormat.parse(maghrib)
-        val ishaTime = simpleDateFormat.parse(isha)
+        val tomorrowDate = SimpleDateFormat("yyyy-MM-dd")
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH)
 
+        val tomorrowTime = Calendar.getInstance()
+        val newDate = "${prayerTimingNextDay.gregorian} 11:59:59"
+        tomorrowTime.time = tomorrowDate.parse(newDate)
+
+        val currentTime = Calendar.getInstance()
+        val todayTime = currentTime.timeInMillis
+
+        val fajrTime = Calendar.getInstance()
+        fajrTime.time = simpleDateFormat.parse(fajr)
+
+        val dhuhrTime = Calendar.getInstance()
+        dhuhrTime.time = simpleDateFormat.parse(dhuhr)
+
+        val asrTime = Calendar.getInstance()
+        asrTime.time = simpleDateFormat.parse(asr)
+
+        val maghribTime = Calendar.getInstance()
+        maghribTime.time = simpleDateFormat.parse(maghrib)
+
+        val ishaTime = Calendar.getInstance()
+        ishaTime.time = simpleDateFormat.parse(isha)
+
+        val sunRiseTime = Calendar.getInstance()
+        sunRiseTime.time = simpleDateFormat.parse(sunRise)
+
+        val midNightTime = Calendar.getInstance()
+        midNightTime.time = simpleDateFormat.parse(midNight)
+
+        val fajrNextDayTime = Calendar.getInstance()
+        fajrNextDayTime.time = simpleDateFormat.parse(fajrNextDay)
 
         _islamicDate.value =
             IslamicDateConverter.islamicDateFormatChange(islamicDate)
 
-        newTime?.let {
+        todayTime.let {
             when {
-                todayTime < tomorrowTime -> {
-                    Timber.d("First")
+                todayTime < tomorrowTime.timeInMillis -> {
                     when {
-                        tomorrowTime < fajrNextDay -> {
-                            _nextPrayer.value = "Fajr - ${prayerTimingNextDay.Fajr}"
-                        }
-                        newTime < dhuhrTime -> {
+                        todayTime < dhuhrTime.timeInMillis -> {
                             _nextPrayer.value = "Dhuhr - ${prayerTiming.Dhuhr}"
                         }
-                        newTime < asrTime -> {
+                        todayTime < asrTime.timeInMillis -> {
                             _nextPrayer.value = "Asr - ${prayerTiming.Asr}"
                         }
-                        newTime < maghribTime -> {
+                        todayTime < maghribTime.timeInMillis -> {
                             _nextPrayer.value = "Maghrib - ${prayerTiming.Maghrib}"
                         }
-                        newTime < ishaTime -> {
+                        todayTime < ishaTime.timeInMillis -> {
                             _nextPrayer.value = "Isha - ${prayerTiming.Isha}"
+                        }
+                        todayTime < fajrNextDayTime.timeInMillis -> {
+                            _nextPrayer.value = "Fajr - ${prayerTimingNextDay.Fajr}"
                         }
                         else -> Unit
                     }
                 }
                 else -> {
-                    if (newTime < fajrTime){
+                    if (todayTime < fajrTime.timeInMillis) {
                         _nextPrayer.value = "Fajr - ${prayerTiming.Fajr}"
                     }
                 }
@@ -285,28 +307,27 @@ constructor(
         }
 
         todayTime.let {
-
             when {
-                todayTime > fajr && todayTime < sunRise -> {
+                todayTime > fajrTime.timeInMillis && todayTime < sunRiseTime.timeInMillis -> {
                     Timber.d("Current TIme : $todayTime")
                     _now.value = "Fajr"
                 }
-                todayTime > dhuhr && todayTime < asr -> {
+                todayTime > dhuhrTime.timeInMillis && todayTime < asrTime.timeInMillis -> {
                     _now.value = "Dhuhr"
                 }
-                todayTime > asr && todayTime < maghrib -> {
+                todayTime > asrTime.timeInMillis && todayTime < maghribTime.timeInMillis -> {
                     _now.value = "Asr"
                 }
-                todayTime > maghrib && todayTime < isha -> {
+                todayTime > maghribTime.timeInMillis && todayTime < ishaTime.timeInMillis -> {
                     _now.value = "Maghrib"
                 }
-                todayTime > isha && todayTime < midNight -> {
+                todayTime > ishaTime.timeInMillis && todayTime < midNightTime.timeInMillis -> {
                     _now.value = "Isha"
                 }
-                todayTime > sunRise && todayTime < dhuhr -> {
+                todayTime > sunRiseTime.timeInMillis && todayTime < dhuhrTime.timeInMillis -> {
                     _now.value = "Sunrise"
                 }
-                todayTime > midNight && todayTime < fajr -> {
+                todayTime > midNightTime.timeInMillis && todayTime < fajrTime.timeInMillis -> {
                     _now.value = "Tahajud"
                 }
                 else -> _now.value = "Next prayer starting soon"

@@ -19,6 +19,7 @@ import com.example.islamicapp.ui.chapters.components.ChaptersScreen
 import com.example.islamicapp.ui.chapters.viewmodel.ChapterViewModel
 import com.example.islamicapp.ui.theme.MidGrey
 import com.example.islamicapp.util.EventHandler
+import kotlinx.coroutines.delay
 import timber.log.Timber
 
 @Composable
@@ -30,6 +31,9 @@ fun MainChapterScreen() {
 
     var chaptersList = mutableListOf<Surah>()
 
+    var showScreen by remember {
+        mutableStateOf(false)
+    }
 
     when (val event = viewModel.events.value) {
         is EventHandler.Chapters -> {
@@ -42,7 +46,12 @@ fun MainChapterScreen() {
         else -> {}
     }
 
+    LaunchedEffect(Unit) {
+        delay(300)
+        showScreen = true
+    }
 
+    if (showScreen) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -81,5 +90,6 @@ fun MainChapterScreen() {
             ChaptersScreen(chaptersList, context)
 
         }
+    }
 
 }

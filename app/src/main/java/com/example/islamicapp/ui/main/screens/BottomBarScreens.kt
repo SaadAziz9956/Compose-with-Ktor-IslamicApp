@@ -1,5 +1,7 @@
 package com.example.islamicapp.ui.main.screens
 
+import com.example.islamicapp.R
+
 
 sealed class BottomBarScreens(
     val route: String,
@@ -8,15 +10,15 @@ sealed class BottomBarScreens(
 ) {
 
     object Dashboard: BottomBarScreens(
-        route = "dashboard",
-        title = "Dashboard",
-        icon = R.drawable.dashboard_selected
+        route = "home",
+        title = "Home",
+        icon = R.drawable.ic_home
     )
 
     object Report: BottomBarScreens(
-        route = "report",
-        title = "Report",
-        icon = R.drawable.report_selected
+        route = "quran",
+        title = "Quran",
+        icon = R.drawable.ic_book
     )
 
 }
