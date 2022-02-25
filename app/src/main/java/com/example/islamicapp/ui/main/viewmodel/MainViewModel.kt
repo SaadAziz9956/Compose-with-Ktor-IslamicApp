@@ -40,7 +40,7 @@ constructor(
     private val context: App
 ) : ViewModel() {
 
-    private var city: String? = null
+    private var city: String? = "Rawalpindi"
 
     private var _prayerTiming = mutableStateOf(PrayerTimingEntity(hijri = ""))
     val prayerTiming: State<PrayerTimingEntity> = _prayerTiming
@@ -65,15 +65,14 @@ constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.Main) {
-                getCurrentLocation()
-            }
+            getCurrentLocation()
+            sendRequest()
             getTiming()
         }
     }
 
 
-    private fun getCurrentLocation() {
+    private suspend fun getCurrentLocation() {
         Timber.d("getCurrentLocation")
 
         if (ActivityCompat.checkSelfPermission(
@@ -84,9 +83,10 @@ constructor(
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Timber.d("checkSelfPermission")
-            _intent.value = true
-
+            withContext(Dispatchers.Main) {
+                Timber.d("checkSelfPermission")
+                _intent.value = true
+            }
         } else {
             Timber.d("GetCity")
             val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -102,15 +102,19 @@ constructor(
                     val lng = user[0].longitude
                     val addresses: List<Address> = geocoder.getFromLocation(lat, lng, 1)
                     city = addresses[0].locality
-                    _city.value = city as String
+                    withContext(Dispatchers.Main) {
+                        _city.value = city as String
+                    }
                     Timber.d("City Name: $city")
                     Timber.d(" DDD lat: $lat,  longitude: $lng")
                 } catch (e: Exception) {
-                    Toast.makeText(
-                        context,
-                        "${e.message} Check internet connection",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "${e.message} Check internet connection",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                     Timber.d("Exception: ${e.message}")
                     e.printStackTrace()
                 }
@@ -129,6 +133,7 @@ constructor(
                 val currentDate = DateFormat.format("yyyy-MM-dd", Date())
 
                 list.forEachIndexed { index, prayerTimingEntity ->
+                    Timber.d("prayerTimingEntity : ${prayerTimingEntity.gregorian}")
 
                     if (currentDate.toString() == prayerTimingEntity.gregorian) {
 
@@ -138,8 +143,6 @@ constructor(
 
                 }
 
-            } else {
-                sendRequest()
             }
 
         }.launchIn(viewModelScope)
