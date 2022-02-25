@@ -40,7 +40,9 @@ constructor(
     private val context: App
 ) : ViewModel() {
 
-    private var city: String? = "Rawalpindi"
+    private var city: String? = null
+
+    private val currentDate = DateFormat.format("yyyy-MM-dd", Date()).toString()
 
     private var _prayerTiming = mutableStateOf(PrayerTimingEntity(hijri = ""))
     val prayerTiming: State<PrayerTimingEntity> = _prayerTiming
@@ -62,6 +64,7 @@ constructor(
 
     private var _intent = mutableStateOf(false)
     val intent: State<Boolean> = _intent
+
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -89,11 +92,14 @@ constructor(
             }
         } else {
             Timber.d("GetCity")
+
             val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val location: Location? = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
 
             if (location == null) {
-                Toast.makeText(context, "Location Not found", Toast.LENGTH_LONG).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Location Not found", Toast.LENGTH_LONG).show()
+                }
             } else {
                 val geocoder = Geocoder(context)
                 try {
@@ -130,12 +136,9 @@ constructor(
 
                 Timber.d("City : ${list[0].city}")
 
-                val currentDate = DateFormat.format("yyyy-MM-dd", Date())
-
                 list.forEachIndexed { index, prayerTimingEntity ->
-                    Timber.d("prayerTimingEntity : ${prayerTimingEntity.gregorian}")
 
-                    if (currentDate.toString() == prayerTimingEntity.gregorian) {
+                    if (currentDate == prayerTimingEntity.gregorian) {
 
                         setPrayerTimings(prayerTimingEntity, list[index + 1])
 
@@ -151,8 +154,15 @@ constructor(
     private suspend fun sendRequest() {
 
         city?.let {
-            Timber.d("Request sent")
-            repo.prayerTimingRequest(it)
+
+            val dataByCity = repo.getDataByCity(it)
+
+            val dataByDate = repo.getDataByDate(currentDate)
+
+            if (dataByCity.isNullOrEmpty() || dataByDate.isNullOrEmpty()) {
+                Timber.d("Request sent")
+                repo.prayerTimingRequest(it)
+            }
         }
 
         when (val value = repo.response.value) {
@@ -282,6 +292,9 @@ constructor(
             when {
                 todayTime < tomorrowTime.timeInMillis -> {
                     when {
+                        todayTime < fajrTime.timeInMillis -> {
+                            _nextPrayer.value = "Fajr - ${prayerTiming.Fajr}"
+                        }
                         todayTime < dhuhrTime.timeInMillis -> {
                             _nextPrayer.value = "Dhuhr - ${prayerTiming.Dhuhr}"
                         }
@@ -330,10 +343,7 @@ constructor(
                 todayTime > sunRiseTime.timeInMillis && todayTime < dhuhrTime.timeInMillis -> {
                     _now.value = "Sunrise"
                 }
-                todayTime > midNightTime.timeInMillis && todayTime < fajrTime.timeInMillis -> {
-                    _now.value = "Tahajud"
-                }
-                else -> _now.value = "Next prayer starting soon"
+                else -> _now.value = "Tahajud"
             }
         }
     }

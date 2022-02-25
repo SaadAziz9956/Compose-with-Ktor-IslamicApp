@@ -46,4 +46,12 @@ class PrayerTimingRepository(
         return dbRepo.getPrayerTiming(city)
     }
 
+    suspend fun getDataByCity(city: String): List<PrayerTimingEntity>? {
+        return dbRepo.getDataByCity(city)
+    }
+
+    suspend fun getDataByDate(currentDate: String): List<PrayerTimingEntity>? {
+        return dbRepo.getDataByDate(currentDate)
+    }
+
 }

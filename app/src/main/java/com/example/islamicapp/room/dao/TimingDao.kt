@@ -19,5 +19,11 @@ interface TimingDao {
     @Query("DELETE FROM prayertimingentity")
     suspend fun deletePrayerTiming(): Int
 
-    
+    @Query("SELECT * FROM prayertimingentity WHERE city = :city")
+    suspend fun getDataByCity(city: String): List<PrayerTimingEntity>?
+
+    @Query("SELECT * FROM prayertimingentity WHERE gregorian = :currentDate")
+    fun getDataByDate(currentDate: String): List<PrayerTimingEntity>?
+
+
 }

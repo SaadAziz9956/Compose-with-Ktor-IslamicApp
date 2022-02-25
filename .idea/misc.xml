@@ -45,6 +45,7 @@
         <entry key="../../../../../../layout/compose-model-1645704784408.xml" value="0.1" />
         <entry key="../../../../../../layout/compose-model-1645704801257.xml" value="0.32432432432432434" />
         <entry key="../../../../../../layout/compose-model-1645708163502.xml" value="0.33530405405405406" />
+        <entry key="../../../../../../layout/compose-model-1645814383101.xml" value="0.2592905405405405" />
         <entry key="app/src/main/res/drawable-v24/ic_book.xml" value="0.22" />
         <entry key="app/src/main/res/drawable-xhdpi/ic_home.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic__bell.xml" value="0.22" />
@@ -61,6 +62,7 @@
         <entry key="app/src/main/res/drawable/ic_quran.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic_quranwhite.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/pdf_icon.xml" value="0.207" />
+        <entry key="app/src/main/res/layout/activity_test.xml" value="0.28020833333333334" />
       </map>
     </option>
   </component>

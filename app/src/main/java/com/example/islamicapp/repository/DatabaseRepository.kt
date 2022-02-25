@@ -39,4 +39,16 @@ class DatabaseRepository(
         return dao.prayerTiming.getPrayerTiming(city)
     }
 
+    suspend fun getDataByCity(city: String): List<PrayerTimingEntity>? {
+        return withContext(Dispatchers.IO) {
+            dao.prayerTiming.getDataByCity(city)
+        }
+    }
+
+    suspend fun getDataByDate(currentDate: String): List<PrayerTimingEntity>? {
+        return withContext(Dispatchers.IO) {
+            dao.prayerTiming.getDataByDate(currentDate)
+        }
+    }
+
 }
