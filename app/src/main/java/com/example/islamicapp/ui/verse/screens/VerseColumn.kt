@@ -20,18 +20,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.R
 import com.example.islamicapp.response.local.book_response.Ayah
 import com.example.islamicapp.ui.theme.*
 import com.example.islamicapp.ui.verse.viewmodel.VerseViewModel
 
 @Composable
-fun VerseColoum(
+fun VerseColumn(
     ayah: Ayah?,
+    verseViewModel: VerseViewModel = viewModel()
 ) {
-
-    val viewModel: VerseViewModel = hiltViewModel()
 
     var text by remember { mutableStateOf("Ayah in Arbi") }
     var textTranslated by remember { mutableStateOf("Ayah Translated") }
@@ -100,8 +99,8 @@ fun VerseColoum(
                                     Toast.LENGTH_LONG
                                 )
                                 .show()
-                            viewModel.openBottomSheet(ayah)
-                            viewModel.playAudio(ayah)
+                            verseViewModel.openBottomSheet(ayah)
+                            verseViewModel.playAudio(ayah)
                         }
                 )
             }
@@ -172,6 +171,6 @@ fun VerseColoum(
 @Composable
 fun DefaultPrevieww() {
     IslamicAppTheme {
-        VerseColoum(null)
+        VerseColumn(null)
     }
 }

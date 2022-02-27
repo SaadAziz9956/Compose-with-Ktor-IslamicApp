@@ -23,6 +23,10 @@ class DatabaseRepository(
         return dao.chapterDao.getChapters()
     }
 
+    fun getRandomChapter(): Flow<Surah> {
+        return dao.chapterDao.getRandomChapter()
+    }
+
     suspend fun getAllData(): List<Surah> {
         return withContext(Dispatchers.IO) {
             dao.chapterDao.getData()

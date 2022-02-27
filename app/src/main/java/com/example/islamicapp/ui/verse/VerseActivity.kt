@@ -22,7 +22,7 @@ import com.example.islamicapp.ui.theme.IslamicAppTheme
 import com.example.islamicapp.ui.verse.screens.MainScreenVerse
 import com.example.islamicapp.ui.verse.viewmodel.VerseViewModel
 import com.example.islamicapp.util.EventHandler
-import com.example.islamicapp.Constants.CHAPTER
+import com.example.islamicapp.util.Constants.CHAPTER
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest

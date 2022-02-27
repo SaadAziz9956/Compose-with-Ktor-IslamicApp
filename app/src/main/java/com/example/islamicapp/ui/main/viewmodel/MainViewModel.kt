@@ -16,7 +16,9 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.islamicapp.App
+import com.example.islamicapp.repository.DatabaseRepository
 import com.example.islamicapp.repository.PrayerTimingRepository
+import com.example.islamicapp.response.local.book_response.Ayah
 import com.example.islamicapp.response.network.prayer_timing.PrayerTiming
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.DataState
@@ -32,11 +34,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 @HiltViewModel
 class MainViewModel
 @Inject
 constructor(
     private val repo: PrayerTimingRepository,
+    private val dbRepo: DatabaseRepository,
     private val context: App
 ) : ViewModel() {
 
@@ -65,15 +69,36 @@ constructor(
     private var _intent = mutableStateOf(false)
     val intent: State<Boolean> = _intent
 
+    private var _verse = mutableStateOf(Ayah())
+    val verse: State<Ayah> = _verse
+
+    private var _chapterName = mutableStateOf("")
+    val chapterName: State<String> = _chapterName
+
+    private var _chapterNum = mutableStateOf(0)
+    val chapterNum: State<Int> = _chapterNum
+
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            getRandomAyah()
             getCurrentLocation()
             sendRequest()
             getTiming()
         }
     }
 
+    private fun getRandomAyah() {
+        val randomChapter = dbRepo.getRandomChapter()
+        randomChapter.onEach {
+        Timber.d("Random : $randomChapter")
+            val size = it.ayahs.size
+            val randomIndex = (0 until size).random()
+            _chapterName.value = it.englishName
+            _chapterNum.value = it.number
+            _verse.value = it.ayahs[randomIndex]
+        }.launchIn(viewModelScope)
+    }
 
     private suspend fun getCurrentLocation() {
         Timber.d("getCurrentLocation")
@@ -103,16 +128,11 @@ constructor(
             } else {
                 val geocoder = Geocoder(context)
                 try {
-                    val user = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                    val lat = user[0].latitude
-                    val lng = user[0].longitude
-                    val addresses: List<Address> = geocoder.getFromLocation(lat, lng, 1)
-                    city = addresses[0].locality
+                    getCityFormLogLat(geocoder, location)
                     withContext(Dispatchers.Main) {
                         _city.value = city as String
                     }
                     Timber.d("City Name: $city")
-                    Timber.d(" DDD lat: $lat,  longitude: $lng")
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
@@ -128,9 +148,17 @@ constructor(
         }
     }
 
+    private fun getCityFormLogLat(geocoder: Geocoder, location: Location) {
+        val user = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+        val lat = user[0].latitude
+        val lng = user[0].longitude
+        val addresses: List<Address> = geocoder.getFromLocation(lat, lng, 1)
+        city = addresses[0].locality
+    }
+
     private fun getTiming() {
 
-        repo.getFromDB(city).onEach { list ->
+        dbRepo.getPrayerTiming(city).onEach { list ->
 
             if (!list.isNullOrEmpty()) {
 
@@ -140,13 +168,22 @@ constructor(
 
                     if (currentDate == prayerTimingEntity.gregorian) {
 
-                        setPrayerTimings(prayerTimingEntity, list[index + 1])
+                        val lastIndex = list.lastIndex
+
+                        val prayerTimeEntity = if (index == lastIndex) {
+                            prayerTimingEntity
+                        } else {
+                            list[index + 1]
+                        }
+
+                        setPrayerTimings(prayerTimingEntity, prayerTimeEntity)
 
                     }
 
                 }
 
             }
+
 
         }.launchIn(viewModelScope)
     }
@@ -155,9 +192,9 @@ constructor(
 
         city?.let {
 
-            val dataByCity = repo.getDataByCity(it)
+            val dataByCity = dbRepo.getDataByCity(it)
 
-            val dataByDate = repo.getDataByDate(currentDate)
+            val dataByDate = dbRepo.getDataByDate(currentDate)
 
             if (dataByCity.isNullOrEmpty() || dataByDate.isNullOrEmpty()) {
                 Timber.d("Request sent")

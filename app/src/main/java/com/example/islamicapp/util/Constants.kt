@@ -1,4 +1,4 @@
-package com.example.islamicapp
+package com.example.islamicapp.util
 
 object Constants {
 
@@ -9,12 +9,5 @@ object Constants {
     const val CHAPTER_NO = "chapterNo"
     const val CHAPTER_NAME = "chapterName"
     const val CHAPTER = "chapter"
-
-    //Editions
-    const val MAUDUDI_EDITION = "ur.maududi"
-    const val ABDUL_BASIT_EDITION = "ar.abdulbasitmurattal"
-    const val IBRAHIM_AKHBAR_EDITION = "ar.ibrahimakhbar"
-    const val ABDUL_SAMAD_EDITION = "ar.abdulsamad"
-    const val HILALI_AND_KHAN_EDITION = "en.hilali"
 
 }

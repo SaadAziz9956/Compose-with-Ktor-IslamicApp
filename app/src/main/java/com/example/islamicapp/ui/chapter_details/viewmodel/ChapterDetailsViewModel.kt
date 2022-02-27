@@ -63,6 +63,7 @@ constructor(
                                 )
                             )
                         }
+                        else -> {}
                     }
                 }.launchIn(viewModelScope)
             }

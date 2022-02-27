@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.response.local.book_response.Ayah
 import com.example.islamicapp.response.local.book_response.Surah
 import com.example.islamicapp.ui.verse.viewmodel.VerseViewModel
@@ -20,6 +21,7 @@ import timber.log.Timber
 @Composable
 fun VerseRecycler(
     chapter: Surah?,
+    verseViewModel: VerseViewModel = viewModel()
 ) {
 
     var list = listOf<Ayah>()
@@ -34,9 +36,7 @@ fun VerseRecycler(
         mutableStateOf(Ayah())
     }
 
-    val viewModel: VerseViewModel = hiltViewModel()
-
-    ayah = viewModel._verse.value
+    ayah = verseViewModel.verse.value
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
@@ -57,11 +57,11 @@ fun VerseRecycler(
                     TopCard(chapter)
                 }
                 itemsIndexed(items = list) { _, item ->
-                    VerseColoum(item)
+                    VerseColumn(item)
                 }
             }
 
-            val bottomSheet = viewModel._bottomSheet.value
+            val bottomSheet = verseViewModel.bottomSheet.value
 
             coroutineScope.launch {
                 if (bottomSheet) {

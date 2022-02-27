@@ -25,4 +25,9 @@ interface ChaptersDao {
     @Query("SELECT * FROM surah WHERE number = :chapNumber")
     fun getSpecificChapter(chapNumber: Int): Flow<Surah>
 
+    @Query("SELECT * FROM surah ORDER BY RANDOM() LIMIT 1")
+    fun getRandomChapter(): Flow<Surah>
+
+    // ORDER BY RANDOM() LIMIT 1
+
 }

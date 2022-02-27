@@ -10,8 +10,8 @@ import com.example.islamicapp.response.local.book_response.Ayah
 import com.example.islamicapp.response.local.book_response.Surah
 import com.example.islamicapp.ui.chapter_details.ChapterDetail
 import com.example.islamicapp.util.EventHandler
-import com.example.islamicapp.Constants.CHAPTER_NAME
-import com.example.islamicapp.Constants.CHAPTER_NO
+import com.example.islamicapp.util.Constants.CHAPTER_NAME
+import com.example.islamicapp.util.Constants.CHAPTER_NO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -29,11 +29,9 @@ constructor(
     private var _event = MutableSharedFlow<EventHandler>()
     val event = _event.asSharedFlow()
 
-    var _bottomSheet = mutableStateOf(false)
+    var bottomSheet = mutableStateOf(false)
 
-    var _verse = mutableStateOf(Ayah())
-
-    var selectedChapter: Surah? = null
+    var verse = mutableStateOf(Ayah())
 
     fun playAudio(ayah: Ayah?) {
 
@@ -66,14 +64,14 @@ constructor(
 
     fun openBottomSheet(ayah: Ayah?) {
         ayah?.let {
-            _verse.value = it
-            _bottomSheet.value = true
+            verse.value = it
+            bottomSheet.value = true
         }
     }
 
     fun pauseAudio() {
         viewModelScope.launch {
-            _bottomSheet.value = false
+            bottomSheet.value = false
             _event.emit(
                 EventHandler.PauseAudio
             )

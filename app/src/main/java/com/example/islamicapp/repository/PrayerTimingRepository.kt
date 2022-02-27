@@ -42,16 +42,4 @@ class PrayerTimingRepository(
         Timber.d("Inserted in db : $insertPrayerTiming")
     }
 
-    fun getFromDB(city: String?): Flow<List<PrayerTimingEntity>?> {
-        return dbRepo.getPrayerTiming(city)
-    }
-
-    suspend fun getDataByCity(city: String): List<PrayerTimingEntity>? {
-        return dbRepo.getDataByCity(city)
-    }
-
-    suspend fun getDataByDate(currentDate: String): List<PrayerTimingEntity>? {
-        return dbRepo.getDataByDate(currentDate)
-    }
-
 }

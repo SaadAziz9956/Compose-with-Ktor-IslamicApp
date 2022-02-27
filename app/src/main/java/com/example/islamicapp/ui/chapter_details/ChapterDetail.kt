@@ -19,8 +19,8 @@ import com.example.islamicapp.ui.chapter_details.components.ChapterDetailScreen
 import com.example.islamicapp.ui.chapter_details.viewmodel.ChapterDetailsViewModel
 import com.example.islamicapp.ui.theme.IslamicAppTheme
 import com.example.islamicapp.util.EventHandler
-import com.example.islamicapp.Constants.CHAPTER_NAME
-import com.example.islamicapp.Constants.CHAPTER_NO
+import com.example.islamicapp.util.Constants.CHAPTER_NAME
+import com.example.islamicapp.util.Constants.CHAPTER_NO
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

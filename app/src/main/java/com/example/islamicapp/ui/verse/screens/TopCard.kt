@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.R
 import com.example.islamicapp.response.local.book_response.Surah
 import com.example.islamicapp.ui.theme.CardBackgroundGradientOne
@@ -24,13 +24,15 @@ import com.example.islamicapp.ui.theme.IslamicAppTheme
 import com.example.islamicapp.ui.verse.viewmodel.VerseViewModel
 
 @Composable
-fun TopCard(chapter: Surah?) {
+fun TopCard(
+    chapter: Surah?,
+    verseViewModel: VerseViewModel = viewModel()
+) {
 
     var chapterName by remember { mutableStateOf("Chapter Name") }
     var nameMeaning by remember { mutableStateOf("Chapter Meaning") }
     var reveleation by remember { mutableStateOf("MECCAN  -   7 Verses") }
 
-    val viewModel: VerseViewModel = hiltViewModel()
 
     chapter?.let {
         it.apply {
@@ -60,7 +62,7 @@ fun TopCard(chapter: Surah?) {
                 shape = RoundedCornerShape(6.dp)
             )
             .clickable {
-                chapter?.let { viewModel.intentLauncher(it) }
+                chapter?.let { verseViewModel.intentLauncher(it) }
             },
         horizontalArrangement = Arrangement.Center,
     ) {

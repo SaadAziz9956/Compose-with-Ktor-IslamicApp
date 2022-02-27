@@ -21,10 +21,10 @@ class ChapterViewModel
 @Inject
 constructor(
     private val dbRepo: DatabaseRepository,
-    private val context: App
 ) : ViewModel() {
 
     init {
+        Timber.d("ViewModel initialized")
         viewModelScope.launch(Dispatchers.IO) {
             getChapters()
         }
@@ -42,8 +42,10 @@ constructor(
             }.launchIn(viewModelScope)
     }
 
-    fun changeScreen(chapter: Surah) {
-        _events.value = EventHandler.Chapter(chapter)
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("ViewModel Cleared")
+
     }
 
 }

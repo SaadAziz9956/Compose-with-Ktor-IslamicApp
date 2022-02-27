@@ -46,21 +46,29 @@
         <entry key="../../../../../../layout/compose-model-1645704801257.xml" value="0.32432432432432434" />
         <entry key="../../../../../../layout/compose-model-1645708163502.xml" value="0.33530405405405406" />
         <entry key="../../../../../../layout/compose-model-1645814383101.xml" value="0.2592905405405405" />
+        <entry key="../../../../../../layout/compose-model-1645962670429.xml" value="0.26013513513513514" />
+        <entry key="../../../../../../layout/compose-model-1645988510792.xml" value="0.335" />
+        <entry key="../../../../../../layout/compose-model-1645989835799.xml" value="0.27870370370370373" />
         <entry key="app/src/main/res/drawable-v24/ic_book.xml" value="0.22" />
         <entry key="app/src/main/res/drawable-xhdpi/ic_home.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic__bell.xml" value="0.22" />
+        <entry key="app/src/main/res/drawable/ic_allah.xml" value="0.1505" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_left_24.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_right_24.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic_book.xml" value="0.22" />
+        <entry key="app/src/main/res/drawable/ic_dua.xml" value="0.1505" />
         <entry key="app/src/main/res/drawable/ic_education.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic_food.xml" value="0.259" />
+        <entry key="app/src/main/res/drawable/ic_hadith.xml" value="0.1505" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic_icon.xml" value="0.2215" />
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.207" />
         <entry key="app/src/main/res/drawable/ic_nav_quran.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic_quran.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/ic_quranwhite.xml" value="0.22" />
+        <entry key="app/src/main/res/drawable/ic_share.xml" value="0.1505" />
+        <entry key="app/src/main/res/drawable/ic_share_black.xml" value="0.1505" />
         <entry key="app/src/main/res/drawable/pdf_icon.xml" value="0.207" />
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.28020833333333334" />
       </map>

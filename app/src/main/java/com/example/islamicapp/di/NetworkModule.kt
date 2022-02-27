@@ -2,7 +2,7 @@ package com.example.islamicapp.di
 
 import com.example.islamicapp.response.network.KtorInterface
 import com.example.islamicapp.response.network.RetrofitInterface
-import com.example.islamicapp.Constants.BASE_URL
+import com.example.islamicapp.util.Constants.BASE_URL
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module

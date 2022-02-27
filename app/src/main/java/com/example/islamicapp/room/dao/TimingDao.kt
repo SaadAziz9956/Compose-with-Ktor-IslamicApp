@@ -26,4 +26,5 @@ interface TimingDao {
     fun getDataByDate(currentDate: String): List<PrayerTimingEntity>?
 
 
+
 }

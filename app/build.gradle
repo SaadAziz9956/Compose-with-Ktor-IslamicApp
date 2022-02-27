@@ -74,13 +74,10 @@ dependencies {
 
     // Horizontal Pager
     implementation "com.google.accompanist:accompanist-pager:0.19.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.19.0"
 
     // Motion Layout
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0"
-
-    // Horizontal Pager
-    implementation "com.google.accompanist:accompanist-pager:0.19.0"
-    implementation "com.google.accompanist:accompanist-pager-indicators:0.19.0"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha03"

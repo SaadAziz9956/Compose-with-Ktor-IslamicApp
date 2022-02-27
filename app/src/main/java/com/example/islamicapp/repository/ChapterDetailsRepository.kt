@@ -1,6 +1,5 @@
 package com.example.islamicapp.repository
 
-
 import com.example.islamicapp.response.network.KtorInterface
 import com.example.islamicapp.response.network.chapter_detail_response.ChapterInfo
 import com.example.islamicapp.util.DataState
