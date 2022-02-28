@@ -3,7 +3,9 @@ package com.example.islamicapp.ui.main.screens
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -24,6 +26,8 @@ fun MainScreen() {
     var tabPage by remember {
         mutableStateOf(TabPage.Book)
     }
+
+    val scrollState = rememberScrollState(0)
 
     val context = LocalContext.current
 
@@ -52,7 +56,7 @@ fun MainScreen() {
             .fillMaxSize()
             .background(
                 color = AppBackground
-            )
+            ).verticalScroll(scrollState)
     ) {
 
         MainCard(nextPrayer, islamicDate, prayerTime, dayOfTheWeek, city)
@@ -67,7 +71,7 @@ fun MainScreen() {
                     horizontal = 10.dp,
                     vertical = 10.dp
                 ),
-            shape = RoundedCornerShape(6.dp),
+            shape = RoundedCornerShape(4.dp),
             elevation = 0.dp
         )  {
 

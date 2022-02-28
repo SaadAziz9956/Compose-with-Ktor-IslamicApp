@@ -91,7 +91,6 @@ constructor(
     private fun getRandomAyah() {
         val randomChapter = dbRepo.getRandomChapter()
         randomChapter.onEach {
-        Timber.d("Random : $randomChapter")
             val size = it.ayahs.size
             val randomIndex = (0 until size).random()
             _chapterName.value = it.englishName
@@ -150,6 +149,7 @@ constructor(
 
     private fun getCityFormLogLat(geocoder: Geocoder, location: Location) {
         val user = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+        Timber.d("Long: ${location.longitude}, Lat: ${location.latitude}")
         val lat = user[0].latitude
         val lng = user[0].longitude
         val addresses: List<Address> = geocoder.getFromLocation(lat, lng, 1)
@@ -288,12 +288,13 @@ constructor(
         val midNight = "${prayerTimingNextDay.gregorian} ${prayerTiming.Midnight}"
         val sunRise = "${prayerTiming.gregorian} ${prayerTiming.Sunrise}"
 
-        val tomorrowDate = SimpleDateFormat("yyyy-MM-dd")
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH)
 
-        val tomorrowTime = Calendar.getInstance()
-        val newDate = "${prayerTimingNextDay.gregorian} 11:59:59"
-        tomorrowTime.time = tomorrowDate.parse(newDate)
+        val tempTime = "11:59 PM"
+        val tomorrowTime: String = tempTime.format(Date())
+
+        val temperTime = SimpleDateFormat("hh:mm a")
+        val todayTempTime: String = temperTime.format(Date()).toString()
 
         val currentTime = Calendar.getInstance()
         val todayTime = currentTime.timeInMillis
@@ -327,7 +328,8 @@ constructor(
 
         todayTime.let {
             when {
-                todayTime < tomorrowTime.timeInMillis -> {
+                todayTempTime < tomorrowTime -> {
+                    Timber.d(" Current time : $todayTime  Dhuhr : $dhuhrTime")
                     when {
                         todayTime < fajrTime.timeInMillis -> {
                             _nextPrayer.value = "Fajr - ${prayerTiming.Fajr}"

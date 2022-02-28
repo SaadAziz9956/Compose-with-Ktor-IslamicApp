@@ -1,4 +1,4 @@
-package com.example.islamicapp.ui.main.screens
+package com.example.islamicapp.ui.main.screens.bottomnav
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope

@@ -1,4 +1,4 @@
-package com.example.islamicapp.ui.main.screens
+package com.example.islamicapp.ui.main.screens.bottomnav
 
 import com.example.islamicapp.R
 

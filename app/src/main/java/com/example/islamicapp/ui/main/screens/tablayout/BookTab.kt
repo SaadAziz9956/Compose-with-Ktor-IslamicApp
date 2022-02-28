@@ -1,9 +1,7 @@
 package com.example.islamicapp.ui.main.screens.tablayout
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,7 +18,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.R
 import com.example.islamicapp.ui.main.viewmodel.MainViewModel
 import com.example.islamicapp.ui.theme.IslamicAppTheme
-import com.example.islamicapp.ui.theme.MidColorBackground
 
 @Composable
 fun BookTab(
@@ -92,8 +89,6 @@ fun BookTab(
                 .padding(
                     top = 10.dp,
                     bottom = 5.dp,
-                    end = 10.dp,
-                    start = 10.dp
                 ),
             horizontalArrangement = Arrangement.End
         ) {
@@ -103,7 +98,7 @@ fun BookTab(
                 color = Color.Black,
                 textAlign = TextAlign.End,
                 fontFamily = FontFamily(
-                    Font(R.font.uthmanicregular)
+                    Font(R.font.pdms)
                 )
             )
         }
