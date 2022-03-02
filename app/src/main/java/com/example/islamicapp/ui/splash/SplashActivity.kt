@@ -27,7 +27,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.islamicapp.R
-import com.example.islamicapp.ui.onboarding.viewmodel.OnBoardingViewModel
+import com.example.islamicapp.ui.splash.viewmodel.OnBoardingViewModel
 import com.example.islamicapp.ui.theme.IslamicAppTheme
 import com.example.islamicapp.util.EventHandler
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,13 +1,11 @@
 package com.example.islamicapp.repository
 
 import com.example.islamicapp.response.local.book_response.Surah
-import com.example.islamicapp.response.local.hadess_book_response.Book
 import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.room.dao.Daos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.invoke
 import kotlinx.coroutines.withContext
 
 class DatabaseRepository(
@@ -32,6 +30,10 @@ class DatabaseRepository(
 
     fun getAllChapters(): Flow<List<Surah>> {
         return dao.chapterDao.getChapters()
+    }
+
+    fun getAllHadiths(): Flow<List<HadeesBookItem>> {
+        return dao.hadithDao.getAllHadith()
     }
 
     fun getRandomChapter(): Flow<Surah> {
@@ -69,6 +71,12 @@ class DatabaseRepository(
     suspend fun getDataByDate(currentDate: String): List<PrayerTimingEntity>? {
         return withContext(Dispatchers.IO) {
             dao.prayerTiming.getDataByDate(currentDate)
+        }
+    }
+
+    suspend fun getSpecificHaidthVolume(volume: String): HadeesBookItem {
+        return withContext(Dispatchers.IO) {
+            dao.hadithDao.getSpecificVolume(volume)
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.islamicapp.ui.chapters.MainChapterScreen
+import com.example.islamicapp.ui.hadith.MainHadithScreen
 import com.example.islamicapp.ui.main.screens.MainScreen
 
 @Composable
@@ -14,6 +15,12 @@ fun BottomNavGraph(navController: NavHostController) {
         navController = navController,
         startDestination = BottomBarScreens.Dashboard.route
     ) {
+
+        composable(route = BottomBarScreens.Hadith.route) {
+
+            MainHadithScreen()
+
+        }
 
         composable(route = BottomBarScreens.Dashboard.route) {
 

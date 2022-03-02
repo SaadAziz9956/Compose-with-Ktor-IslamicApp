@@ -51,11 +51,6 @@ constructor(
 
     private var lat: Double? = null
 
-    private val job = viewModelScope.launch {
-        delay(1000)
-        getTiming()
-    }
-
     private val currentDate = DateFormat.format("dd-MM-yyyy", Date()).toString()
 
     private var _prayerTiming = mutableStateOf(PrayerTimingEntity(hijri = ""))
@@ -93,13 +88,8 @@ constructor(
             getRandomAyah()
             getCurrentLocation()
             sendRequest()
-            job.start()
+            getTiming()
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
     }
 
     private fun getRandomAyah() {

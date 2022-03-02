@@ -9,6 +9,12 @@ sealed class BottomBarScreens(
     val icon: Int
 ) {
 
+    object Hadith: BottomBarScreens(
+        route = "hadees",
+        title = "Hadith",
+        icon = R.drawable.ic_hadith
+    )
+
     object Dashboard: BottomBarScreens(
         route = "home",
         title = "Home",

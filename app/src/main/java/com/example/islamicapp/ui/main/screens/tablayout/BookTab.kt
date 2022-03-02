@@ -57,14 +57,22 @@ fun BookTab(
         ) {
 
             Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                verticalArrangement = Arrangement.Center
             ) {
+
+                Text(
+                    text = "Verse",
+                    fontSize = 16.sp,
+                    color = Color.Black,
+                    fontFamily = FontFamily(
+                        Font(R.font.ralewaymedium)
+                    )
+                )
+
                 Text(
                     text = "Surah $chapterName [$chapterNum-${verse.numberInSurah}]",
                     fontSize = 12.sp,
                     color = Color.Black,
-                    textAlign = TextAlign.End,
                     fontFamily = FontFamily(
                         Font(R.font.ralewayregular)
                     )

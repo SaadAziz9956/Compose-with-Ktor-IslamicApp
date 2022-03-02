@@ -36,11 +36,11 @@ fun BottomNavScreen() {
 fun BottomBar(navController: NavHostController) {
 
     val screens = listOf(
+        BottomBarScreens.Hadith,
 
         BottomBarScreens.Dashboard,
 
-        BottomBarScreens.Report,
-
+        BottomBarScreens.Report
         )
 
     val navBacStackEntry by navController.currentBackStackEntryAsState()

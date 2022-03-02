@@ -21,7 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IslamicApp" >
         <activity
-            android:name=".ui.onboarding.OnBoardingActivity"
+            android:name="com.example.islamicapp.ui.hadith.hadith_book_detail.HadithBookDetails"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hadith.volumn_detail.VolumeDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"

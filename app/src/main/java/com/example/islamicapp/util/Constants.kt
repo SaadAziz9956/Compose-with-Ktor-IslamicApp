@@ -9,5 +9,7 @@ object Constants {
     const val CHAPTER_NO = "chapterNo"
     const val CHAPTER_NAME = "chapterName"
     const val CHAPTER = "chapter"
+    const val HADITH_BOOK = "hadithBook"
+    const val VOLUME = "volume"
 
 }

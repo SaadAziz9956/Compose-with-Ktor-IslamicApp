@@ -24,13 +24,15 @@ class JsonRepository(
     val intent: State<Boolean> = _intent
 
     suspend fun getDataFromJson() {
-        if (dbRepo.getAllHadithData()
+        if (dbRepo.getAllChaptersData()
+                .isNullOrEmpty() &&
+            dbRepo.getAllHadithData()
                 .isNullOrEmpty()
         ) {
             Timber.d("getDataFromJson")
-            getChapterData()
-            getHadithData()
-            if (getChapterData() && getHadithData()) {
+            val chapterData = getChapterData()
+            val hadithData = getHadithData()
+            if (chapterData && hadithData) {
                 _intent.value = true
             } else {
                 getDataFromJson()

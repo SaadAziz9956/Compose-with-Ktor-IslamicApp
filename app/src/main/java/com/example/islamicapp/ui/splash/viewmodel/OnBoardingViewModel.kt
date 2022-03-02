@@ -1,4 +1,4 @@
-package com.example.islamicapp.ui.onboarding.viewmodel
+package com.example.islamicapp.ui.splash.viewmodel
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel
