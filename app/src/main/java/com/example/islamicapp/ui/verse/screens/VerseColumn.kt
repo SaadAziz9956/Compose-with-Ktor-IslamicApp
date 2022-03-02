@@ -125,7 +125,7 @@ fun VerseColumn(
                 color = Color.Black,
                 textAlign = TextAlign.End,
                 fontFamily = FontFamily(
-                    Font(R.font.pdms)
+                    Font(R.font.almajeed)
                 )
             )
         }

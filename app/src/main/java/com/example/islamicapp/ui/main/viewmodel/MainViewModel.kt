@@ -19,12 +19,13 @@ import com.example.islamicapp.App
 import com.example.islamicapp.repository.DatabaseRepository
 import com.example.islamicapp.repository.PrayerTimingRepository
 import com.example.islamicapp.response.local.book_response.Ayah
-import com.example.islamicapp.response.network.prayer_timing.PrayerTiming
+import com.example.islamicapp.response.network.test.Test
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.DataState
 import com.example.islamicapp.util.IslamicDateConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -46,15 +47,24 @@ constructor(
 
     private var city: String? = null
 
-    private val currentDate = DateFormat.format("yyyy-MM-dd", Date()).toString()
+    private var long: Double? = null
+
+    private var lat: Double? = null
+
+    private val job = viewModelScope.launch {
+        delay(1000)
+        getTiming()
+    }
+
+    private val currentDate = DateFormat.format("dd-MM-yyyy", Date()).toString()
 
     private var _prayerTiming = mutableStateOf(PrayerTimingEntity(hijri = ""))
     val prayerTiming: State<PrayerTimingEntity> = _prayerTiming
 
-    private var _nextPrayer = mutableStateOf("Prayer time loading")
+    private var _nextPrayer = mutableStateOf("")
     val nextPrayer: State<String> = _nextPrayer
 
-    private var _now = mutableStateOf("Prayer time loading")
+    private var _now = mutableStateOf("")
     val now: State<String> = _now
 
     private var _islamicDate = mutableStateOf("Date time loading")
@@ -78,14 +88,18 @@ constructor(
     private var _chapterNum = mutableStateOf(0)
     val chapterNum: State<Int> = _chapterNum
 
-
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getRandomAyah()
             getCurrentLocation()
             sendRequest()
-            getTiming()
+            job.start()
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        job.cancel()
     }
 
     private fun getRandomAyah() {
@@ -118,7 +132,7 @@ constructor(
             Timber.d("GetCity")
 
             val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val location: Location? = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+            val location: Location? = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
             if (location == null) {
                 withContext(Dispatchers.Main) {
@@ -148,6 +162,8 @@ constructor(
     }
 
     private fun getCityFormLogLat(geocoder: Geocoder, location: Location) {
+        long = location.longitude
+        lat = location.latitude
         val user = geocoder.getFromLocation(location.latitude, location.longitude, 1)
         Timber.d("Long: ${location.longitude}, Lat: ${location.latitude}")
         val lat = user[0].latitude
@@ -186,71 +202,6 @@ constructor(
 
 
         }.launchIn(viewModelScope)
-    }
-
-    private suspend fun sendRequest() {
-
-        city?.let {
-
-            val dataByCity = dbRepo.getDataByCity(it)
-
-            val dataByDate = dbRepo.getDataByDate(currentDate)
-
-            if (dataByCity.isNullOrEmpty() || dataByDate.isNullOrEmpty()) {
-                Timber.d("Request sent")
-                repo.prayerTimingRequest(it)
-            }
-        }
-
-        when (val value = repo.response.value) {
-
-            is DataState.Success<PrayerTiming> -> {
-                Timber.d("Success")
-
-                val prayerTiming = value.data.results.datetime
-
-                prayerTiming.forEach { datetime ->
-
-                    val times = datetime.times
-                    val date = datetime.date
-
-                    Timber.d("City : $city")
-
-                    val entity = PrayerTimingEntity(
-                        Asr = times.Asr,
-                        Dhuhr = times.Dhuhr,
-                        Fajr = times.Fajr,
-                        Imsak = times.Imsak,
-                        Isha = times.Isha,
-                        Maghrib = times.Maghrib,
-                        Midnight = times.Midnight,
-                        Sunrise = times.Sunrise,
-                        Sunset = times.Sunset,
-                        gregorian = date.gregorian,
-                        hijri = date.hijri,
-                        timestamp = date.timestamp,
-                        city = city
-                    )
-
-                    repo.insertInDB(entity)
-                }
-
-            }
-
-            is DataState.Error -> {
-                Timber.d("Exception: ${value.exception}")
-            }
-            DataState.Idle -> {
-                Timber.d("Idle")
-            }
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun setPrayerTimings(
-        prayerTiming: PrayerTimingEntity,
-        prayerTimingNextDay: PrayerTimingEntity
-    ) {
 
         val calendar = Calendar.getInstance()
 
@@ -277,114 +228,215 @@ constructor(
             Calendar.SATURDAY -> {
                 _currentDay.value = "Saturday"
             }
+
         }
-        val asr = "${prayerTiming.gregorian} ${prayerTiming.Asr}"
-        val dhuhr = "${prayerTiming.gregorian} ${prayerTiming.Dhuhr}"
-        val fajr = "${prayerTiming.gregorian} ${prayerTiming.Fajr}"
-        val fajrNextDay = "${prayerTimingNextDay.gregorian} ${prayerTimingNextDay.Fajr}"
-        val maghrib = "${prayerTiming.gregorian} ${prayerTiming.Maghrib}"
-        val isha = "${prayerTiming.gregorian} ${prayerTiming.Isha}"
+    }
+
+    private suspend fun sendRequest() {
+
+
+        city?.let {
+            val dataByCity = dbRepo.getDataByCity(it)
+            val dataByDate = dbRepo.getDataByDate(currentDate)
+
+            if (dataByCity.isNullOrEmpty() || dataByDate.isNullOrEmpty()) {
+                Timber.d("Request sent")
+                repo.prayerTimingRequest(
+                    long = long,
+                    lat = lat
+                )
+            }
+        }
+
+
+        when (val value = repo.response.value) {
+
+            is DataState.Success<Test> -> {
+                Timber.d("Success")
+
+                val prayerTiming = value.data.data
+
+                prayerTiming.forEach { datetime ->
+
+                    val times = datetime.timings
+                    val date = datetime.date
+
+                    Timber.d("City : $city")
+
+                    val entity = PrayerTimingEntity(
+                        Asr = times.Asr,
+                        Dhuhr = times.Dhuhr,
+                        Fajr = times.Fajr,
+                        Imsak = times.Imsak,
+                        Isha = times.Isha,
+                        Maghrib = times.Maghrib,
+                        Midnight = times.Midnight,
+                        Sunrise = times.Sunrise,
+                        Sunset = times.Sunset,
+                        gregorian = date.gregorian.date,
+                        hijri = date.hijri.date,
+                        city = city,
+                        timestamp = date.timestamp
+                    )
+
+                    repo.insertInDB(entity)
+                }
+
+            }
+
+            is DataState.Error -> {
+                Timber.d("Exception: ${value.exception}")
+            }
+            DataState.Idle -> {
+                Timber.d("Idle")
+            }
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun setPrayerTimings(
+        prayerTiming: PrayerTimingEntity,
+        prayerTimingNextDay: PrayerTimingEntity
+    ) {
+
+        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault())
+
+        var fajr = prayerTiming.Fajr?.replace(" (PKT)", "")
+        var fajrNextDay = prayerTimingNextDay.Fajr?.replace("(PKT)", "")
+        var dhuhr = prayerTiming.Dhuhr?.replace("(PKT)", "")
+        var asr = prayerTiming.Asr?.replace("(PKT)", "")
+        var maghrib = prayerTiming.Maghrib?.replace("(PKT)", "")
+        var isha = prayerTiming.Isha?.replace("(PKT)", "")
+        var sunrise = prayerTiming.Sunrise?.replace("(PKT)", "")
+        var midnight = prayerTimingNextDay.Midnight?.replace("(PKT)", "")
+
+        fajr = fajr?.let { formatDate(it) }
+        dhuhr = dhuhr?.let { formatDate(it) }
+        asr = asr?.let { formatDate(it) }
+        maghrib = maghrib?.let { formatDate(it) }
+        isha = isha?.let { formatDate(it) }
+        sunrise = sunrise?.let { formatDate(it) }
+        midnight = midnight?.let { formatDate(it) }
+        fajrNextDay = fajrNextDay?.let { formatDate(it) }
+
+        val fajrWithDate = "${prayerTiming.gregorian} $fajr"
+        val fajrNextDayWithDate =
+            "${prayerTimingNextDay.gregorian} $fajrNextDay"
+        val dhuhrWithDate = "${prayerTiming.gregorian} $dhuhr"
+        val asrWithDate = "${prayerTiming.gregorian} $asr"
+        val maghribWithDate = "${prayerTiming.gregorian} $maghrib"
+        val ishaWithDate = "${prayerTiming.gregorian} $isha"
+        val sunRiseWithDate = "${prayerTiming.gregorian} $sunrise"
+        val midNightWithDate =
+            "${prayerTimingNextDay.gregorian} $midnight"
         val islamicDate = prayerTiming.hijri
-        val midNight = "${prayerTimingNextDay.gregorian} ${prayerTiming.Midnight}"
-        val sunRise = "${prayerTiming.gregorian} ${prayerTiming.Sunrise}"
 
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH)
+        val tempTomTime = "11:59:59 PM"
+        val tomorrowTime: String = tempTomTime.format(Date())
 
-        val tempTime = "11:59 PM"
-        val tomorrowTime: String = tempTime.format(Date())
+        val tempTime = SimpleDateFormat("hh:mm a")
+        val todayTempTime: String = tempTime.format(Date()).toString()
 
-        val temperTime = SimpleDateFormat("hh:mm a")
-        val todayTempTime: String = temperTime.format(Date()).toString()
+        Timber.d("Today : $todayTempTime Tomorrow : $tomorrowTime")
 
-        val currentTime = Calendar.getInstance()
-        val todayTime = currentTime.timeInMillis
+        val todayTime = Calendar.getInstance()
+        val currentTime = todayTime.timeInMillis
 
         val fajrTime = Calendar.getInstance()
-        fajrTime.time = simpleDateFormat.parse(fajr)
+        fajrTime.time = simpleDateFormat.parse(fajrWithDate)
 
         val dhuhrTime = Calendar.getInstance()
-        dhuhrTime.time = simpleDateFormat.parse(dhuhr)
+        dhuhrTime.time = simpleDateFormat.parse(dhuhrWithDate)
 
         val asrTime = Calendar.getInstance()
-        asrTime.time = simpleDateFormat.parse(asr)
+        asrTime.time = simpleDateFormat.parse(asrWithDate)
 
         val maghribTime = Calendar.getInstance()
-        maghribTime.time = simpleDateFormat.parse(maghrib)
+        maghribTime.time = simpleDateFormat.parse(maghribWithDate)
 
         val ishaTime = Calendar.getInstance()
-        ishaTime.time = simpleDateFormat.parse(isha)
+        ishaTime.time = simpleDateFormat.parse(ishaWithDate)
 
         val sunRiseTime = Calendar.getInstance()
-        sunRiseTime.time = simpleDateFormat.parse(sunRise)
+        sunRiseTime.time = simpleDateFormat.parse(sunRiseWithDate)
 
         val midNightTime = Calendar.getInstance()
-        midNightTime.time = simpleDateFormat.parse(midNight)
+        midNightTime.time = simpleDateFormat.parse(midNightWithDate)
 
         val fajrNextDayTime = Calendar.getInstance()
-        fajrNextDayTime.time = simpleDateFormat.parse(fajrNextDay)
+        fajrNextDayTime.time = simpleDateFormat.parse(fajrNextDayWithDate)
 
         _islamicDate.value =
             IslamicDateConverter.islamicDateFormatChange(islamicDate)
 
-        todayTime.let {
+        currentTime.let {
             when {
                 todayTempTime < tomorrowTime -> {
-                    Timber.d(" Current time : $todayTime  Dhuhr : $dhuhrTime")
+                    Timber.d(" Current time : $currentTime  Dhuhr : $dhuhrTime")
                     when {
-                        todayTime < fajrTime.timeInMillis -> {
-                            _nextPrayer.value = "Fajr - ${prayerTiming.Fajr}"
+                        currentTime < fajrTime.timeInMillis -> {
+                            _nextPrayer.value = "Fajr - $fajr"
                         }
-                        todayTime < dhuhrTime.timeInMillis -> {
-                            _nextPrayer.value = "Dhuhr - ${prayerTiming.Dhuhr}"
+                        currentTime < dhuhrTime.timeInMillis -> {
+                            _nextPrayer.value = "Dhuhr - $dhuhr"
                         }
-                        todayTime < asrTime.timeInMillis -> {
-                            _nextPrayer.value = "Asr - ${prayerTiming.Asr}"
+                        currentTime < asrTime.timeInMillis -> {
+                            _nextPrayer.value = "Asr - $asr"
                         }
-                        todayTime < maghribTime.timeInMillis -> {
-                            _nextPrayer.value = "Maghrib - ${prayerTiming.Maghrib}"
+                        currentTime < maghribTime.timeInMillis -> {
+                            _nextPrayer.value = "Maghrib - $maghrib"
                         }
-                        todayTime < ishaTime.timeInMillis -> {
-                            _nextPrayer.value = "Isha - ${prayerTiming.Isha}"
+                        currentTime < ishaTime.timeInMillis -> {
+                            _nextPrayer.value = "Isha - $isha"
                         }
-                        todayTime < fajrNextDayTime.timeInMillis -> {
-                            _nextPrayer.value = "Fajr - ${prayerTimingNextDay.Fajr}"
+                        currentTime < fajrNextDayTime.timeInMillis -> {
+                            _nextPrayer.value = "Fajr - $fajr"
                         }
                         else -> Unit
                     }
                 }
                 else -> {
-                    if (todayTime < fajrTime.timeInMillis) {
-                        _nextPrayer.value = "Fajr - ${prayerTiming.Fajr}"
+                    if (currentTime < fajrTime.timeInMillis) {
+                        _nextPrayer.value = "Fajr - $fajrNextDay"
                     }
                 }
             }
 
         }
 
-        todayTime.let {
-            when {
-                todayTime > fajrTime.timeInMillis && todayTime < sunRiseTime.timeInMillis -> {
-                    Timber.d("Current TIme : $todayTime")
-                    _now.value = "Fajr"
-                }
-                todayTime > dhuhrTime.timeInMillis && todayTime < asrTime.timeInMillis -> {
-                    _now.value = "Dhuhr"
-                }
-                todayTime > asrTime.timeInMillis && todayTime < maghribTime.timeInMillis -> {
-                    _now.value = "Asr"
-                }
-                todayTime > maghribTime.timeInMillis && todayTime < ishaTime.timeInMillis -> {
-                    _now.value = "Maghrib"
-                }
-                todayTime > ishaTime.timeInMillis && todayTime < midNightTime.timeInMillis -> {
-                    _now.value = "Isha"
-                }
-                todayTime > sunRiseTime.timeInMillis && todayTime < dhuhrTime.timeInMillis -> {
-                    _now.value = "Sunrise"
-                }
-                else -> _now.value = "Tahajud"
+        when {
+            currentTime > fajrTime.timeInMillis && currentTime < sunRiseTime.timeInMillis -> {
+                Timber.d("Current TIme : $currentTime")
+                _now.value = "Fajr"
             }
+            currentTime > dhuhrTime.timeInMillis && currentTime < asrTime.timeInMillis -> {
+                _now.value = "Dhuhr"
+            }
+            currentTime > asrTime.timeInMillis && currentTime < maghribTime.timeInMillis -> {
+                _now.value = "Asr"
+            }
+            currentTime > maghribTime.timeInMillis && currentTime < ishaTime.timeInMillis -> {
+                _now.value = "Maghrib"
+            }
+            currentTime > ishaTime.timeInMillis && currentTime < midNightTime.timeInMillis -> {
+                _now.value = "Isha"
+            }
+            currentTime > sunRiseTime.timeInMillis && currentTime < dhuhrTime.timeInMillis -> {
+                _now.value = "Sunrise"
+            }
+            else -> _now.value = "Tahajud"
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun formatDate(time: String): String {
+        Timber.d("Format : $time")
+        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val date = format.parse(time)
+        val format1 = Calendar.getInstance()
+        format1.time = date
+        val simpleDateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        return simpleDateFormat.format(format1.time)
     }
 
 }

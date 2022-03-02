@@ -14,7 +14,7 @@ interface ChaptersDao {
     fun getChapters(): Flow<List<Surah>>
 
     @Query("SELECT * FROM surah")
-    suspend fun getData(): List<Surah>
+    suspend fun getData(): List<Surah>?
 
     @Update
     suspend fun updateChapter(chapter: Surah): Int

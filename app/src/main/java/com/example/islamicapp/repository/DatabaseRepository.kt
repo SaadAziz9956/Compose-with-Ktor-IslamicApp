@@ -1,10 +1,13 @@
 package com.example.islamicapp.repository
 
 import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.response.local.hadess_book_response.Book
+import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.room.dao.Daos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.invoke
 import kotlinx.coroutines.withContext
 
 class DatabaseRepository(
@@ -12,9 +15,17 @@ class DatabaseRepository(
 ) {
 
     suspend fun insertChapters(chapters: List<Surah>) {
-        withContext(Dispatchers.IO) {
-            chapters.forEach { chapter ->
-                dao.chapterDao.insertChapter(chapter)
+        return withContext(Dispatchers.IO) {
+            chapters.onEach { cahpter ->
+                dao.chapterDao.insertChapter(cahpter)
+            }
+        }
+    }
+
+    suspend fun insertHadith(books: List<HadeesBookItem>) {
+        return withContext(Dispatchers.IO) {
+            books.onEach { book ->
+                dao.hadithDao.insertHadith(book)
             }
         }
     }
@@ -27,9 +38,15 @@ class DatabaseRepository(
         return dao.chapterDao.getRandomChapter()
     }
 
-    suspend fun getAllData(): List<Surah> {
+    suspend fun getAllChaptersData(): List<Surah>? {
         return withContext(Dispatchers.IO) {
             dao.chapterDao.getData()
+        }
+    }
+
+    suspend fun getAllHadithData(): List<HadeesBookItem>? {
+        return withContext(Dispatchers.IO) {
+            dao.hadithDao.getHadithData()
         }
     }
 

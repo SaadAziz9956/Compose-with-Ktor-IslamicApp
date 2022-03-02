@@ -19,6 +19,6 @@ data class PrayerTimingEntity(
     val gregorian: String? = null,
     @PrimaryKey
     val hijri: String,
-    val timestamp: Int? = null,
+    val timestamp: String? = null,
     val city: String? = null,
 )

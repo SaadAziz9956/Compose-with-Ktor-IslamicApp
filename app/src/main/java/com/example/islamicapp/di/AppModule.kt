@@ -38,7 +38,8 @@ object AppModule {
     ): Daos {
         return Daos(
             database.chapterDao(),
-            database.prayerTiming()
+            database.prayerTiming(),
+            database.hadithDao()
         )
     }
 

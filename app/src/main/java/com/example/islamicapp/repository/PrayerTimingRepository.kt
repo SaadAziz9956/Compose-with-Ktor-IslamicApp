@@ -1,9 +1,11 @@
 package com.example.islamicapp.repository
 
+import android.os.TestLooperManager
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.example.islamicapp.response.network.KtorInterface
 import com.example.islamicapp.response.network.prayer_timing.PrayerTiming
+import com.example.islamicapp.response.network.test.Test
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.DataState
 import io.ktor.client.features.*
@@ -15,12 +17,12 @@ class PrayerTimingRepository(
     private val dbRepo: DatabaseRepository
 ) {
 
-    private val _response = mutableStateOf<DataState<PrayerTiming>>(DataState.Idle)
-    val response: State<DataState<PrayerTiming>> = _response
+    private val _response = mutableStateOf<DataState<Test>>(DataState.Idle)
+    val response: State<DataState<Test>> = _response
 
-    suspend fun prayerTimingRequest(chapNo: String) {
+    suspend fun prayerTimingRequest(long: Double?, lat: Double?) {
         try {
-            val getPrayerTiming = client.getPrayerTiming(chapNo)
+            val getPrayerTiming = client.getPrayerTiming(long, lat)
             _response.value = DataState.Success(getPrayerTiming)
         } catch (e: Exception) {
             Timber.d("Exception: $e")

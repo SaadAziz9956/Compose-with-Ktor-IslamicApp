@@ -1,4 +1,4 @@
-package com.example.islamicapp.ui.splash.viewmodel
+package com.example.islamicapp.ui.onboarding.viewmodel
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel
+class OnBoardingViewModel
 @Inject
 constructor(
     private val repo: JsonRepository,
@@ -25,10 +25,10 @@ constructor(
     private val _events = MutableSharedFlow<EventHandler>()
     val events = _events.asSharedFlow()
 
-    init {
+    fun initViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
-            val data = repo.getData()
-            if(data) {
+            repo.getDataFromJson()
+            if(repo.intent.value) {
                 intentLauncher()
             }
         }
@@ -44,6 +44,5 @@ constructor(
             }
         }
     }
-
 
 }

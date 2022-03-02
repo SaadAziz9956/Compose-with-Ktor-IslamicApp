@@ -26,32 +26,34 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.islamicapp.ui.splash.viewmodel.SplashViewModel
+import com.example.islamicapp.R
+import com.example.islamicapp.ui.onboarding.viewmodel.OnBoardingViewModel
 import com.example.islamicapp.ui.theme.IslamicAppTheme
 import com.example.islamicapp.util.EventHandler
-import com.example.islamicapp.R
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<SplashViewModel>()
+    private val viewModel by viewModels<OnBoardingViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            IslamicAppTheme {
 
-                startCollection()
+            viewModel.initViewModel()
+
+            startCollecting()
+
+            IslamicAppTheme {
                 SplashScreen()
             }
         }
     }
 
-    private fun startCollection() {
+    private fun startCollecting() {
         lifecycleScope.launchWhenCreated {
 
             viewModel.events
@@ -59,12 +61,13 @@ class SplashActivity : ComponentActivity() {
                 .collectLatest { event ->
 
                     when (event) {
+
                         is EventHandler.MoveForward -> {
-                            delay(300)
                             startActivity(event.intent)
                             finish()
                         }
-                        else -> Unit
+
+                        else -> {}
                     }
 
                 }
