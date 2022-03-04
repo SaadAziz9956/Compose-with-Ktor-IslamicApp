@@ -11,7 +11,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.islamicapp.response.local.book_response.Surah
-import com.example.islamicapp.ui.verse.VerseActivity
+import com.example.islamicapp.ui.chapters.verse.VerseActivity
 import com.example.islamicapp.util.Constants.CHAPTER
 
 @Composable

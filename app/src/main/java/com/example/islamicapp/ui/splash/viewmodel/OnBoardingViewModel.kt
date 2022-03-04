@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.islamicapp.App
 import com.example.islamicapp.repository.JsonRepository
-import com.example.islamicapp.ui.main.MainActivity
+import com.example.islamicapp.ui.home.MainActivity
 import com.example.islamicapp.util.EventHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

@@ -16,6 +16,7 @@ import com.example.islamicapp.R
 import com.example.islamicapp.ui.hadith.screen.HadithBookScreen
 import com.example.islamicapp.ui.hadith.viewmodel.HadithViewModel
 import com.example.islamicapp.ui.theme.MidGrey
+import kotlinx.coroutines.delay
 
 @Composable
 fun MainHadithScreen() {
@@ -24,43 +25,55 @@ fun MainHadithScreen() {
 
     val books = viewModel.books.value
 
+    var showScreen by remember {
+        mutableStateOf(false)
+    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+    LaunchedEffect(Unit) {
+        delay(300)
+        showScreen = true
+    }
 
-        Text(
-            modifier = Modifier.padding(
-                top = 30.dp,
-                start = 15.dp
-            ),
-            text = "Hadith Book",
-            fontSize = 13.sp,
-            color = MidGrey,
-            fontFamily = FontFamily(
-                Font(
-                    R.font.ralewayregular
+
+    if (showScreen) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+
+            Text(
+                modifier = Modifier.padding(
+                    top = 30.dp,
+                    start = 15.dp
+                ),
+                text = "Hadith Book",
+                fontSize = 13.sp,
+                color = MidGrey,
+                fontFamily = FontFamily(
+                    Font(
+                        R.font.ralewayregular
+                    )
                 )
             )
-        )
 
-        Text(
-            modifier = Modifier.padding(
-                start = 15.dp,
-                bottom = 10.dp
-            ),
-            text = "Sahih Bukhari",
-            fontSize = 25.sp,
-            color = Color.Black,
-            fontFamily = FontFamily(
-                Font(
-                    R.font.ralewaymedium
+            Text(
+                modifier = Modifier.padding(
+                    start = 15.dp,
+                    bottom = 10.dp
+                ),
+                text = "Sahih Bukhari",
+                fontSize = 25.sp,
+                color = Color.Black,
+                fontFamily = FontFamily(
+                    Font(
+                        R.font.ralewaymedium
+                    )
                 )
             )
-        )
 
-        HadithBookScreen(books)
+            HadithBookScreen(books)
 
+        }
     }
 }

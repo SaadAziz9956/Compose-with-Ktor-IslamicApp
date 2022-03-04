@@ -27,16 +27,16 @@
             android:name=".ui.hadith.volumn_detail.VolumeDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.home.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.chapter_details.ChapterDetail"
+            android:name="com.example.islamicapp.ui.chapters.chapter_details.ChapterDetail"
             android:exported="false" />
         <activity
             android:name=".ui.permission.LocationPermissionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.verse.VerseActivity"
+            android:name="com.example.islamicapp.ui.chapters.verse.VerseActivity"
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"

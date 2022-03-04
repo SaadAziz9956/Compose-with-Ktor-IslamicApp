@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.ui.hadith.hadith_book_detail.screen.HadithColumn
 import com.example.islamicapp.ui.hadith.viewmodel.HadithViewModel
 import com.example.islamicapp.ui.theme.IslamicAppTheme
-import com.example.islamicapp.ui.verse.screens.ToolbarScreen
+import com.example.islamicapp.ui.chapters.verse.screens.ToolbarScreen
 import com.example.islamicapp.util.Constants.HADITH_BOOK
 import dagger.hilt.android.AndroidEntryPoint
 

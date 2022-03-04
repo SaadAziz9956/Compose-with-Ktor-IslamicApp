@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.ui.hadith.hadith_book_detail.HadithBookDetails
 import com.example.islamicapp.ui.hadith.viewmodel.HadithViewModel
-import com.example.islamicapp.ui.verse.screens.ToolbarScreen
+import com.example.islamicapp.ui.chapters.verse.screens.ToolbarScreen
 import com.example.islamicapp.util.Constants.HADITH_BOOK
 
 @Composable
