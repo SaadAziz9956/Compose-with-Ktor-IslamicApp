@@ -2,7 +2,7 @@ package com.example.islamicapp.ui.main.viewmodel
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -19,13 +19,14 @@ import com.example.islamicapp.App
 import com.example.islamicapp.repository.DatabaseRepository
 import com.example.islamicapp.repository.PrayerTimingRepository
 import com.example.islamicapp.response.local.book_response.Ayah
+import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
+import com.example.islamicapp.response.local.hadess_book_response.Hadith
 import com.example.islamicapp.response.network.test.Test
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.DataState
 import com.example.islamicapp.util.IslamicDateConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -34,6 +35,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 @HiltViewModel
@@ -77,6 +79,9 @@ constructor(
     private var _verse = mutableStateOf(Ayah())
     val verse: State<Ayah> = _verse
 
+    private var _hadith = mutableStateOf(Hadith("","",""))
+    val hadith: State<Hadith> = _hadith
+
     private var _chapterName = mutableStateOf("")
     val chapterName: State<String> = _chapterName
 
@@ -86,6 +91,7 @@ constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getRandomAyah()
+            getRandomHadith()
             getCurrentLocation()
             sendRequest()
             getTiming()
@@ -101,6 +107,22 @@ constructor(
             _chapterNum.value = it.number
             _verse.value = it.ayahs[randomIndex]
         }.launchIn(viewModelScope)
+    }
+
+    private fun getRandomHadith() {
+
+        val randomChapter = dbRepo.getRandomHadith()
+
+        randomChapter.onEach {
+
+            val size = it.books.size
+
+            val randomIndex = (0 until size).random()
+
+            _hadith.value = it.books[randomIndex].hadiths[randomIndex]
+
+        }.launchIn(viewModelScope)
+
     }
 
     private suspend fun getCurrentLocation() {
@@ -121,17 +143,28 @@ constructor(
         } else {
             Timber.d("GetCity")
 
-            val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val location: Location? = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            val mLocationManager: LocationManager =
+                context.getSystemService(
+                    LOCATION_SERVICE
+                ) as LocationManager
+            val providers: List<String> = mLocationManager.getProviders(true)
+            var bestLocation: Location? = null
+            for (provider in providers) {
+                val l: Location = mLocationManager.getLastKnownLocation(provider)
+                    ?: continue
+                if (bestLocation == null || l.accuracy < bestLocation.accuracy) {
+                    bestLocation = l
+                }
+            }
 
-            if (location == null) {
+            if (bestLocation == null) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Location Not found", Toast.LENGTH_LONG).show()
                 }
             } else {
                 val geocoder = Geocoder(context)
                 try {
-                    getCityFormLogLat(geocoder, location)
+                    getCityFormLogLat(geocoder, bestLocation)
                     withContext(Dispatchers.Main) {
                         _city.value = city as String
                     }

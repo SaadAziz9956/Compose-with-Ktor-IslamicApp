@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.islamicapp.ui.main.screens.tablayout.BookTab
+import com.example.islamicapp.ui.main.screens.tablayout.HadithTab
 import com.example.islamicapp.ui.main.screens.tablayout.TabHome
 import com.example.islamicapp.ui.main.screens.tablayout.TabPage
 import com.example.islamicapp.ui.main.viewmodel.MainViewModel
@@ -80,16 +81,7 @@ fun MainScreen() {
                     BookTab()
                 }
                 TabPage.Hadith -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(
-                                color = Color.White
-                            )
-                            .height(250.dp)
-                    ) {
-
-                    }
+                    HadithTab()
                 }
                 TabPage.Names -> {
                     Row(

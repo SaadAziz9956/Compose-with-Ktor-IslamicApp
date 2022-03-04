@@ -40,6 +40,11 @@ class DatabaseRepository(
         return dao.chapterDao.getRandomChapter()
     }
 
+    fun getRandomHadith(): Flow<HadeesBookItem> {
+        return dao.hadithDao.getRandomHadith()
+    }
+
+
     suspend fun getAllChaptersData(): List<Surah>? {
         return withContext(Dispatchers.IO) {
             dao.chapterDao.getData()
