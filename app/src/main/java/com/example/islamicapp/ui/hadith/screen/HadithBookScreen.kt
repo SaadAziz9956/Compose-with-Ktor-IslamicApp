@@ -12,9 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
 import com.example.islamicapp.ui.hadith.volumn_detail.VolumeDetailActivity
-import com.example.islamicapp.ui.hadith.volumn_detail.viewmodel.VolumeDetailViewModel
-import com.example.islamicapp.ui.verse.VerseActivity
-import com.example.islamicapp.util.Constants
 import com.example.islamicapp.util.Constants.VOLUME
 
 @Composable

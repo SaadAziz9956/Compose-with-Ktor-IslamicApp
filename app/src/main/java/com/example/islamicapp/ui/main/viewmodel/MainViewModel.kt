@@ -395,7 +395,6 @@ constructor(
         currentTime.let {
             when {
                 todayTempTime < tomorrowTime -> {
-                    Timber.d(" Current time : $currentTime  Dhuhr : $dhuhrTime")
                     when {
                         currentTime < fajrTime.timeInMillis -> {
                             _nextPrayer.value = "Fajr - $fajr"

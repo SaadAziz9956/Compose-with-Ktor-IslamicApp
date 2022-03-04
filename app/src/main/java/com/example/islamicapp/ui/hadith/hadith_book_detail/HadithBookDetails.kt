@@ -9,10 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.example.islamicapp.response.local.hadess_book_response.Book
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.ui.hadith.hadith_book_detail.screen.HadithColumn
+import com.example.islamicapp.ui.hadith.viewmodel.HadithViewModel
 import com.example.islamicapp.ui.theme.IslamicAppTheme
 import com.example.islamicapp.ui.verse.screens.ToolbarScreen
 import com.example.islamicapp.util.Constants.HADITH_BOOK
@@ -25,13 +26,11 @@ class HadithBookDetails : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val book = intent?.extras?.getParcelable<Book>(HADITH_BOOK)
+            val bookName = intent?.extras?.getString(HADITH_BOOK)
 
             IslamicAppTheme {
-                book?.let {
-                    HadithBookDetailsScreen(it) {
-                        finish()
-                    }
+                HadithBookDetailsScreen(bookName) {
+                    finish()
                 }
             }
         }
@@ -40,18 +39,34 @@ class HadithBookDetails : ComponentActivity() {
 }
 
 @Composable
-fun HadithBookDetailsScreen(book: Book, finish: () -> Unit) {
+fun HadithBookDetailsScreen(
+    bookName: String?,
+    hadithViewModel: HadithViewModel = viewModel(),
+    finish: () -> Unit
+) {
+
+    var title by remember {
+        mutableStateOf("")
+    }
+
+    bookName?.let {
+        title = it
+    }
+
+    hadithViewModel.getSpecificBook(bookName)
+
+    val hadith = hadithViewModel.hadith.value
 
     Surface(Modifier.fillMaxSize()) {
 
         Column(Modifier.fillMaxHeight()) {
 
-            ToolbarScreen(chapterName = book.name) {
+            ToolbarScreen(chapterName = title) {
                 finish()
             }
 
             LazyColumn() {
-                itemsIndexed(items = book.hadiths) { index, item ->
+                itemsIndexed(items = hadith) { index, item ->
                     HadithColumn(item, index)
                 }
             }
