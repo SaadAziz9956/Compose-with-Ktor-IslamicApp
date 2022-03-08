@@ -6,10 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.islamicapp.response.local.book_response.Surah
-import com.example.islamicapp.response.local.hadess_book_response.Book
 import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
+import com.example.islamicapp.response.local.names.NamesData
 import com.example.islamicapp.room.dao.ChaptersDao
 import com.example.islamicapp.room.dao.HadithDao
+import com.example.islamicapp.room.dao.NamesDao
 import com.example.islamicapp.room.dao.TimingDao
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.GsonTypeConvertor
@@ -19,13 +20,14 @@ import com.example.islamicapp.util.GsonTypeConvertor
     entities = [
         Surah::class,
         PrayerTimingEntity::class,
-        HadeesBookItem::class
+        HadeesBookItem::class,
+        NamesData::class
     ], version = 1,
     exportSchema = false
 )
 
 @TypeConverters(
-    GsonTypeConvertor::class
+    GsonTypeConvertor::class,
 )
 
 abstract class AppDatabase : RoomDatabase() {
@@ -33,6 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun chapterDao(): ChaptersDao
     abstract fun prayerTiming(): TimingDao
     abstract fun hadithDao(): HadithDao
+    abstract fun namesDao(): NamesDao
 
     companion object {
         @Volatile

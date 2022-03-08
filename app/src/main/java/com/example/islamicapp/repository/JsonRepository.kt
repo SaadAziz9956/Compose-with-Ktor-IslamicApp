@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.example.islamicapp.response.local.book_response.Surah
 import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
+import com.example.islamicapp.response.local.names.NamesData
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -24,15 +25,23 @@ class JsonRepository(
     val intent: State<Boolean> = _intent
 
     suspend fun getDataFromJson() {
-        if (dbRepo.getAllChaptersData()
+
+        val allChaptersData = dbRepo.getAllChaptersData()
+        val allHadithData = dbRepo.getAllHadithData()
+        val allNamesData = dbRepo.getNamesData()
+
+        if (allChaptersData
                 .isNullOrEmpty() &&
-            dbRepo.getAllHadithData()
+            allHadithData
+                .isNullOrEmpty() &&
+            allNamesData
                 .isNullOrEmpty()
         ) {
             Timber.d("getDataFromJson")
             val chapterData = getChapterData()
             val hadithData = getHadithData()
-            if (chapterData && hadithData) {
+            val namesData = getNamesData()
+            if (chapterData && hadithData && namesData) {
                 _intent.value = true
             } else {
                 getDataFromJson()
@@ -70,6 +79,21 @@ class JsonRepository(
 
         Timber.d("Hadith inserted")
         return getAllHadithData != null
+    }
+
+    private suspend fun getNamesData(): Boolean {
+
+        val jsonFileString: String? = getJsonFromAssets(context, "AllahNames.JSON")
+        val gson = GsonBuilder().setPrettyPrinting().setLenient().create()
+        val token = object : TypeToken<List<NamesData>>() {}.type
+        val names: List<NamesData> = gson.fromJson(jsonFileString, token)
+
+        dbRepo.insertNames(names)
+
+        val getNamesData = dbRepo.getNamesData()
+
+        Timber.d("Names inserted")
+        return getNamesData != null
     }
 
     private fun getJsonFromAssets(context: Context, json: String): String? {

@@ -2,8 +2,10 @@ package com.example.islamicapp.repository
 
 import com.example.islamicapp.response.local.book_response.Surah
 import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
+import com.example.islamicapp.response.local.names.NamesData
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.room.dao.Daos
+import com.example.islamicapp.room.dao.NamesDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -24,6 +26,14 @@ class DatabaseRepository(
         return withContext(Dispatchers.IO) {
             books.onEach { book ->
                 dao.hadithDao.insertHadith(book)
+            }
+        }
+    }
+
+    suspend fun insertNames(names: List<NamesData>) {
+        return withContext(Dispatchers.IO) {
+            names.onEach { name ->
+                dao.namesDao.insertNames(name)
             }
         }
     }
@@ -57,6 +67,13 @@ class DatabaseRepository(
         }
     }
 
+    suspend fun getNamesData(): List<NamesData>? {
+        return withContext(Dispatchers.IO) {
+            dao.namesDao.getNamesData()
+        }
+    }
+
+
     suspend fun insertPrayerTiming(timing: PrayerTimingEntity): Long? {
         return withContext(Dispatchers.IO) {
             dao.prayerTiming.insertPrayerTiming(timing)
@@ -84,5 +101,4 @@ class DatabaseRepository(
             dao.hadithDao.getSpecificVolume(volume)
         }
     }
-
 }

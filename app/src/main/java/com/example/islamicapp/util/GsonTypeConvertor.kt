@@ -4,6 +4,8 @@ import androidx.room.TypeConverter
 import com.example.islamicapp.response.local.book_response.Ayah
 import com.example.islamicapp.response.local.hadess_book_response.Book
 import com.example.islamicapp.response.local.hadess_book_response.Hadith
+import com.example.islamicapp.response.local.names.Meaning
+import com.example.islamicapp.response.local.names.NamesData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -58,5 +60,37 @@ object GsonTypeConvertor {
     fun bookToString(someObjects: List<Book>?): String {
         return gson.toJson(someObjects)
     }
+
+    @TypeConverter
+    fun stringToNamesObjectList(data: String?): List<NamesData> {
+        if (data == null) {
+            return emptyList()
+        }
+        val listType = object : TypeToken<List<NamesData>?>() {}.type
+        return gson.fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun namesToString(someObjects: List<NamesData>?): String {
+        val listType = object : TypeToken<List<NamesData>?>() {}.type
+        return gson.toJson(someObjects, listType)
+    }
+
+    @TypeConverter
+    fun stringToMeaning(data: String?): Meaning? {
+        if (data == null) {
+            return null
+        }
+        val listType = object : TypeToken<Meaning>() {}.type
+        return gson.fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun meaningToString(someObjects: Meaning): String {
+        val listType = object : TypeToken<Meaning>() {}.type
+        return gson.toJson(someObjects, listType)
+    }
+
+
 
 }
