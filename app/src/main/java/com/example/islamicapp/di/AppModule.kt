@@ -40,7 +40,8 @@ object AppModule {
             database.chapterDao(),
             database.prayerTiming(),
             database.hadithDao(),
-            database.namesDao()
+            database.namesDao(),
+            database.duaDao()
         )
     }
 

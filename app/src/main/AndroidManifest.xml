@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.islamicapp" >
+    package="com.example.islamicapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,9 +19,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IslamicApp" >
+        android:theme="@style/Theme.IslamicApp">
         <activity
-            android:name="com.example.islamicapp.ui.hadith.hadith_book_detail.HadithBookDetails"
+            android:name=".ui.MainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.IslamicApp" />
+        <activity
+            android:name=".ui.hadith.hadith_book_detail.HadithBookDetails"
             android:exported="false" />
         <activity
             android:name=".ui.hadith.volumn_detail.VolumeDetailActivity"
@@ -30,18 +35,18 @@
             android:name=".ui.home.MainActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.islamicapp.ui.chapters.chapter_details.ChapterDetail"
+            android:name=".ui.chapters.chapter_details.ChapterDetail"
             android:exported="false" />
         <activity
             android:name=".ui.permission.LocationPermissionActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.islamicapp.ui.chapters.verse.VerseActivity"
+            android:name=".ui.chapters.verse.VerseActivity"
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:theme="@style/HideStatusBar" >
+            android:theme="@style/HideStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,6 +1,7 @@
 package com.example.islamicapp.repository
 
 import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.response.local.duaas.Supplication
 import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
 import com.example.islamicapp.response.local.names.NamesData
 import com.example.islamicapp.room.entity.PrayerTimingEntity
@@ -16,8 +17,8 @@ class DatabaseRepository(
 
     suspend fun insertChapters(chapters: List<Surah>) {
         return withContext(Dispatchers.IO) {
-            chapters.onEach { cahpter ->
-                dao.chapterDao.insertChapter(cahpter)
+            chapters.onEach { chapter ->
+                dao.chapterDao.insertChapter(chapter)
             }
         }
     }
@@ -38,6 +39,13 @@ class DatabaseRepository(
         }
     }
 
+    suspend fun insertDuas(supplications: List<Supplication>) {
+        return withContext(Dispatchers.IO) {
+            supplications.onEach { supplication ->
+                dao.duaDao.insertDuas(supplication)
+            }
+        }    }
+
     fun getAllChapters(): Flow<List<Surah>> {
         return dao.chapterDao.getChapters()
     }
@@ -50,10 +58,13 @@ class DatabaseRepository(
         return dao.chapterDao.getRandomChapter()
     }
 
-    fun getRandomHadith(): Flow<HadeesBookItem> {
-        return dao.hadithDao.getRandomHadith()
+    fun getRandomName(): Flow<NamesData> {
+        return dao.namesDao.getRandomName()
     }
 
+    fun getRandomHadith(): Flow<HadeesBookItem?> {
+        return dao.hadithDao.getRandomHadith()
+    }
 
     suspend fun getAllChaptersData(): List<Surah>? {
         return withContext(Dispatchers.IO) {
@@ -67,12 +78,17 @@ class DatabaseRepository(
         }
     }
 
-    suspend fun getNamesData(): List<NamesData>? {
+    suspend fun getAllNamesData(): List<NamesData>? {
         return withContext(Dispatchers.IO) {
             dao.namesDao.getNamesData()
         }
     }
 
+    suspend fun getAllDuaData(): List<Supplication>? {
+        return withContext(Dispatchers.IO) {
+            dao.duaDao.getDuaData()
+        }
+    }
 
     suspend fun insertPrayerTiming(timing: PrayerTimingEntity): Long? {
         return withContext(Dispatchers.IO) {

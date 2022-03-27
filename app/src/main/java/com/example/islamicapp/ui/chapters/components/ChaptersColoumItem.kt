@@ -68,7 +68,8 @@ fun ColumnItem(item: Surah) {
                 Box(Modifier.align(Alignment.Center)) {
                     Text(text = item.number.toString(),
                     fontSize = 7.sp,
-                    color = MidGrey)
+                    color = MidGrey,
+                    fontFamily = FontFamily.Default)
                 }
             }
 

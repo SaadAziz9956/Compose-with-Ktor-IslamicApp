@@ -6,4 +6,5 @@ class Daos(
     val prayerTiming: TimingDao,
     val hadithDao: HadithDao,
     val namesDao: NamesDao,
+    val duaDao: DuaDao,
 )

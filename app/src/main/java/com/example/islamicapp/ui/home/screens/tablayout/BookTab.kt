@@ -41,7 +41,7 @@ fun BookTab(
         text = it
     }
 
-    verse.textTranslated?.let {
+    verse.englishTrans?.let {
         textTranslated = it
     }
 
@@ -103,7 +103,6 @@ fun BookTab(
             Text(
                 text = text,
                 fontSize = 25.sp,
-                color = Color.Black,
                 textAlign = TextAlign.End,
                 fontFamily = FontFamily(
                     Font(R.font.almajeed)
@@ -117,17 +116,16 @@ fun BookTab(
                 .padding(
                     top = 15.dp,
                     bottom = 5.dp,
-                    start = 10.dp
+                    end = 10.dp
                 ),
             horizontalArrangement = Arrangement.End
         ) {
             Text(
                 text = textTranslated,
-                fontSize = 16.sp,
-                color = Color.Black,
-                textAlign = TextAlign.End,
+                fontSize = 15.sp,
+                textAlign = TextAlign.Start,
                 fontFamily = FontFamily(
-                    Font(R.font.jameelnoori)
+                    Font(R.font.ralewayregular)
                 )
             )
         }

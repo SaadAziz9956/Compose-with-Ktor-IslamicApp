@@ -17,4 +17,5 @@ data class Ayah(
     val sajda: Any? = null,
     val text: String? = null,
     var textTranslated: String? = null,
+    var englishTrans: String? = null,
 ) : Serializable

@@ -99,7 +99,7 @@ private fun SetImage() {
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
-                durationMillis = 1000
+                durationMillis = 3000
             }
         )
     )

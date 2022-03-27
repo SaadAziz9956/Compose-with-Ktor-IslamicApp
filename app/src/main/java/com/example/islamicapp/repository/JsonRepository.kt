@@ -3,7 +3,9 @@ package com.example.islamicapp.repository
 import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import com.example.islamicapp.response.local.book_response.BookResponse
 import com.example.islamicapp.response.local.book_response.Surah
+import com.example.islamicapp.response.local.duaas.Supplication
 import com.example.islamicapp.response.local.hadess_book_response.HadeesBookItem
 import com.example.islamicapp.response.local.names.NamesData
 import com.google.gson.Gson
@@ -28,41 +30,101 @@ class JsonRepository(
 
         val allChaptersData = dbRepo.getAllChaptersData()
         val allHadithData = dbRepo.getAllHadithData()
-        val allNamesData = dbRepo.getNamesData()
+        val allNamesData = dbRepo.getAllNamesData()
+        val allDuaData = dbRepo.getAllDuaData()
 
         if (allChaptersData
-                .isNullOrEmpty() &&
+                .isNullOrEmpty() ||
             allHadithData
-                .isNullOrEmpty() &&
+                .isNullOrEmpty() ||
             allNamesData
+                .isNullOrEmpty() ||
+            allDuaData
                 .isNullOrEmpty()
         ) {
+
             Timber.d("getDataFromJson")
+
             val chapterData = getChapterData()
             val hadithData = getHadithData()
             val namesData = getNamesData()
+            val duaData = getDuaData()
+
             if (chapterData && hadithData && namesData) {
                 _intent.value = true
             } else {
                 getDataFromJson()
             }
+
         } else {
+
             Timber.d("Intent")
             delay(800)
             _intent.value = true
+
         }
+    }
+
+    private suspend fun getDuaData(): Boolean {
+        val jsonFileString: String? = getJsonFromAssets(context, "Duaas.JSON")
+        val gson = GsonBuilder().setPrettyPrinting().setLenient().create()
+        val token = object : TypeToken<List<Supplication>>() {}.type
+        val supplication: List<Supplication> = gson.fromJson(jsonFileString, token)
+
+        dbRepo.insertDuas(supplication)
+
+        val getAllHadithData = dbRepo.getAllDuaData()
+
+        Timber.d("Dua inserted")
+
+        return getAllHadithData != null
     }
 
     private suspend fun getChapterData(): Boolean {
         val jsonFileString: String? = getJsonFromAssets(context, "Quran.JSON")
         val gson = Gson()
         val listUserType: Type = object : TypeToken<List<Surah>>() {}.type
-        val users: List<Surah> = gson.fromJson(jsonFileString, listUserType)
+        val chapters: List<Surah> = gson.fromJson(jsonFileString, listUserType)
 
-        dbRepo.insertChapters(users)
+        getChapterDataEnglish(chapters)
 
         val allChaptersData = dbRepo.getAllChaptersData()
         Timber.d("Chapter inserted")
+        return allChaptersData != null
+    }
+
+    private suspend fun getChapterDataEnglish(chapters: List<Surah>): Boolean {
+        val jsonFileString: String? = getJsonFromAssets(context, "QuranEnglish.JSON")
+        val gson = Gson()
+        val listUserType: Type = object : TypeToken<BookResponse>() {}.type
+        val chaptersEnglish: BookResponse = gson.fromJson(jsonFileString, listUserType)
+
+        chaptersEnglish.data.surahs.onEach { translatedChapter ->
+
+            translatedChapter.ayahs.onEach { translatedAyah ->
+
+                chapters.onEach { chapter ->
+
+                    chapter.ayahs.onEach { ayah ->
+
+                        if (translatedAyah.number == ayah.number) {
+
+                            ayah.englishTrans = translatedAyah.text
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        dbRepo.insertChapters(chapters)
+
+        val allChaptersData = dbRepo.getAllChaptersData()
+        Timber.d("English Chapter inserted")
         return allChaptersData != null
     }
 
@@ -90,7 +152,7 @@ class JsonRepository(
 
         dbRepo.insertNames(names)
 
-        val getNamesData = dbRepo.getNamesData()
+        val getNamesData = dbRepo.getAllNamesData()
 
         Timber.d("Names inserted")
         return getNamesData != null

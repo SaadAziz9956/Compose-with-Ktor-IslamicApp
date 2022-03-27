@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,8 +18,6 @@ import androidx.compose.ui.unit.sp
 import com.example.islamicapp.R
 import com.example.islamicapp.response.local.hadess_book_response.Hadith
 import com.example.islamicapp.ui.theme.CardBackgroundGradientTwo
-import com.example.islamicapp.ui.theme.ExtraLightGrey
-import com.example.islamicapp.ui.theme.LightBackground
 import com.example.islamicapp.ui.theme.MidColorBackground
 
 @Composable
@@ -36,29 +33,26 @@ fun HadithColumn(item: Hadith, index: Int) {
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(
-                    horizontal = 5.dp,
-                    vertical = 6.dp
+                    vertical = 3.dp
                 ),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Box(
-                modifier = Modifier
-                    .background(
-                        color = CardBackgroundGradientTwo,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .padding(5.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
 
                 Text(
-                    text = (index + 1).toString(),
-                    fontSize = 8.sp,
-                    color = LightBackground
+                    text = "${index + 1}.  ${item.by}",
+                    fontSize = 15.sp,
+                    color = CardBackgroundGradientTwo,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(start = 10.dp),
+                    fontFamily = FontFamily.Default
                 )
-
             }
-
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
@@ -76,29 +70,8 @@ fun HadithColumn(item: Hadith, index: Int) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 15.dp,
-                    bottom = 5.dp,
-                    start = 5.dp
-                ),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Text(
-                text = item.by,
-                fontSize = 20.sp,
-                color = Color.Black,
-                textAlign = TextAlign.Start,
-                fontFamily = FontFamily(
-                    Font(R.font.ralewayregular)
-                )
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 15.dp,
-                    bottom = 5.dp,
+                    top = 5.dp,
+                    bottom = 25.dp,
                     start = 5.dp
                 ),
             horizontalArrangement = Arrangement.Start
@@ -114,17 +87,6 @@ fun HadithColumn(item: Hadith, index: Int) {
             )
         }
 
-        Divider(
-            modifier = Modifier
-                .padding(
-                    top = 10.dp,
-                    bottom = 5.dp
-                )
-                .background(
-                    color = ExtraLightGrey
-                )
-                .height(1.dp)
-        )
     }
 
 }

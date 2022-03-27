@@ -40,7 +40,7 @@ fun VerseColumn(
         text = it
     }
 
-    ayah?.textTranslated?.let {
+    ayah?.englishTrans?.let {
         textTranslated = it
     }
 
@@ -72,7 +72,8 @@ fun VerseColumn(
                 Text(
                     text = ayah?.numberInSurah.toString(),
                     fontSize = 8.sp,
-                    color = LightBackground
+                    color = LightBackground,
+                    fontFamily = FontFamily.Default
                 )
 
             }
@@ -136,7 +137,7 @@ fun VerseColumn(
                 .padding(
                     top = 15.dp,
                     bottom = 5.dp,
-                    start = 10.dp
+                    end = 10.dp
                 ),
             horizontalArrangement = Arrangement.End
         ) {
@@ -144,9 +145,9 @@ fun VerseColumn(
                 text = textTranslated,
                 fontSize = 20.sp,
                 color = Color.Black,
-                textAlign = TextAlign.End,
+                textAlign = TextAlign.Start,
                 fontFamily = FontFamily(
-                    Font(R.font.jameelnoori)
+                    Font(R.font.ralewayregular)
                 )
             )
         }

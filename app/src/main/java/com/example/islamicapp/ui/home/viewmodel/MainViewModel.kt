@@ -20,6 +20,7 @@ import com.example.islamicapp.repository.DatabaseRepository
 import com.example.islamicapp.repository.PrayerTimingRepository
 import com.example.islamicapp.response.local.book_response.Ayah
 import com.example.islamicapp.response.local.hadess_book_response.Hadith
+import com.example.islamicapp.response.local.names.NamesData
 import com.example.islamicapp.response.network.test.Test
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.DataState
@@ -78,11 +79,14 @@ constructor(
     private var _verse = mutableStateOf(Ayah())
     val verse: State<Ayah> = _verse
 
-    private var _hadith = mutableStateOf(Hadith("","",""))
+    private var _hadith = mutableStateOf(Hadith("", "", ""))
     val hadith: State<Hadith> = _hadith
 
     private var _chapterName = mutableStateOf("")
     val chapterName: State<String> = _chapterName
+
+    private var _name = mutableStateOf(NamesData())
+    val name: State<NamesData> = _name
 
     private var _chapterNum = mutableStateOf(0)
     val chapterNum: State<Int> = _chapterNum
@@ -91,10 +95,18 @@ constructor(
         viewModelScope.launch(Dispatchers.IO) {
             getRandomAyah()
             getRandomHadith()
+            getRandomName()
             getCurrentLocation()
             sendRequest()
             getTiming()
         }
+    }
+
+    private fun getRandomName() {
+        val randomChapter = dbRepo.getRandomName()
+        randomChapter.onEach {
+            _name.value = it
+        }.launchIn(viewModelScope)
     }
 
     private fun getRandomAyah() {
@@ -114,11 +126,13 @@ constructor(
 
         randomChapter.onEach {
 
-            val size = it.books.size
+            it?.let { item ->
+                val size = item.books.size
 
-            val randomIndex = (0 until size).random()
+                val randomIndex = (0 until size).random()
 
-            _hadith.value = it.books[randomIndex].hadiths[randomIndex]
+                _hadith.value = item.books[randomIndex].hadiths[randomIndex]
+            }
 
         }.launchIn(viewModelScope)
 
@@ -353,10 +367,10 @@ constructor(
             "${prayerTimingNextDay.gregorian} $midnight"
         val islamicDate = prayerTiming.hijri
 
-        val tempTomTime = "11:59:59 PM"
+        val tempTomTime = "11:59:59"
         val tomorrowTime: String = tempTomTime.format(Date())
 
-        val tempTime = SimpleDateFormat("hh:mm a")
+        val tempTime = SimpleDateFormat("hh:mm:ss")
         val todayTempTime: String = tempTime.format(Date()).toString()
 
         Timber.d("Today : $todayTempTime Tomorrow : $tomorrowTime")
@@ -394,6 +408,7 @@ constructor(
         currentTime.let {
             when {
                 todayTempTime < tomorrowTime -> {
+
                     when {
                         currentTime < fajrTime.timeInMillis -> {
                             _nextPrayer.value = "Fajr - $fajr"
