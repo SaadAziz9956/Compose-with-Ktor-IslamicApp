@@ -66,6 +66,10 @@ class DatabaseRepository(
         return dao.hadithDao.getRandomHadith()
     }
 
+    fun getRandomDua(): Flow<Supplication?> {
+        return dao.duaDao.getRandomDuas()
+    }
+
     suspend fun getAllChaptersData(): List<Surah>? {
         return withContext(Dispatchers.IO) {
             dao.chapterDao.getData()

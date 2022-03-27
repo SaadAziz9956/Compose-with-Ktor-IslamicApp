@@ -86,19 +86,11 @@ fun MainScreen() {
                     NamesTab()
                 }
                 TabPage.Dua -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(
-                                color = Color.White
-                            )
-                            .height(50.dp)
-                    ) {
-
-                    }
+                    DuasTab()
                 }
             }
 
         }
     }
 }
+

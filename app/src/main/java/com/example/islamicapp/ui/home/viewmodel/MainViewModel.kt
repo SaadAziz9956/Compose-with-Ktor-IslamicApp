@@ -19,9 +19,11 @@ import com.example.islamicapp.App
 import com.example.islamicapp.repository.DatabaseRepository
 import com.example.islamicapp.repository.PrayerTimingRepository
 import com.example.islamicapp.response.local.book_response.Ayah
+import com.example.islamicapp.response.local.duaas.DuaaData
 import com.example.islamicapp.response.local.hadess_book_response.Hadith
 import com.example.islamicapp.response.local.names.NamesData
 import com.example.islamicapp.response.network.test.Test
+import com.example.islamicapp.room.dao.DuaDao
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.DataState
 import com.example.islamicapp.util.IslamicDateConverter
@@ -91,11 +93,21 @@ constructor(
     private var _chapterNum = mutableStateOf(0)
     val chapterNum: State<Int> = _chapterNum
 
+    private var _randDua = mutableStateOf(DuaaData())
+    val randDua: State<DuaaData> = _randDua
+
+    private var _duaType = mutableStateOf("")
+    val duaType: State<String> = _duaType
+
+    private var _duaName = mutableStateOf("")
+    val duaName: State<String> = _duaName
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getRandomAyah()
             getRandomHadith()
             getRandomName()
+            getRandomDua()
             getCurrentLocation()
             sendRequest()
             getTiming()
@@ -106,6 +118,22 @@ constructor(
         val randomChapter = dbRepo.getRandomName()
         randomChapter.onEach {
             _name.value = it
+        }.launchIn(viewModelScope)
+    }
+
+    private fun getRandomDua() {
+        val randomDua = dbRepo.getRandomDua()
+        randomDua.onEach { supplication ->
+            supplication?.let {
+                _duaType.value = it.name
+                val size = it.duas.size
+                val randomIndex = (0 until size).random()
+                val dua = it.duas[randomIndex]
+                _duaName.value = dua.name
+                val nSize = dua.data.size
+                val nRandomIndex = (0 until nSize).random()
+                _randDua.value = dua.data[nRandomIndex]
+            }
         }.launchIn(viewModelScope)
     }
 

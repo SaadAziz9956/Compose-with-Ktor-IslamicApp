@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Keep
 @Parcelize
 data class DuaaData(
-    val inEnglish: String,
-    val meaning: String,
-    val reference: String,
-    val text: String
+    val inEnglish: String? = null,
+    val meaning: String? = null,
+    val reference: String? = null,
+    val text: String? = null
 ) : Parcelable
