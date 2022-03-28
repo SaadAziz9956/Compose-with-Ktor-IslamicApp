@@ -1,4 +1,4 @@
-package com.example.islamicapp.response.network.test
+package com.example.islamicapp.response.network.prayer_timing
 
 import kotlinx.serialization.Serializable
 

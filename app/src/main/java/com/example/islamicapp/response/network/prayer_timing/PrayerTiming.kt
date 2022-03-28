@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PrayerTiming(
     val code: Int,
-    val results: Results,
+    val `data`: List<Data>,
     val status: String
 )

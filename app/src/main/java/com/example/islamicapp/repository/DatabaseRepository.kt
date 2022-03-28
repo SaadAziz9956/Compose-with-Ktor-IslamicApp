@@ -50,6 +50,10 @@ class DatabaseRepository(
         return dao.chapterDao.getChapters()
     }
 
+    fun getAllDuas(): Flow<List<Supplication>> {
+        return dao.duaDao.getAllDuas()
+    }
+
     fun getAllHadiths(): Flow<List<HadeesBookItem>> {
         return dao.hadithDao.getAllHadith()
     }

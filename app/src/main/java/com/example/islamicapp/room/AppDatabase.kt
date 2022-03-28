@@ -21,7 +21,7 @@ import com.example.islamicapp.util.GsonTypeConvertor
         HadeesBookItem::class,
         NamesData::class,
         Supplication::class
-    ], version = 1,
+    ], version = 2,
     exportSchema = false
 )
 

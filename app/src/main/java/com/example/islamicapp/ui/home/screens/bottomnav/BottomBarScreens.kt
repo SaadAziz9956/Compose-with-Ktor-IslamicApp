@@ -29,7 +29,7 @@ sealed class BottomBarScreens(
 
     object Supplications: BottomBarScreens(
         route = "supplications",
-        title = "Supplications",
+        title = "Dua",
         icon = R.drawable.ic_dua
     )
 

@@ -1,5 +1,6 @@
 package com.example.islamicapp.ui.chapters
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import com.example.islamicapp.R
 import com.example.islamicapp.response.local.book_response.Surah
 import com.example.islamicapp.ui.chapters.components.ChaptersScreen
 import com.example.islamicapp.ui.chapters.viewmodel.ChapterViewModel
+import com.example.islamicapp.ui.theme.AppBackground
 import com.example.islamicapp.ui.theme.MidGrey
 import com.example.islamicapp.util.EventHandler
 import kotlinx.coroutines.delay
@@ -52,6 +54,7 @@ fun MainChapterScreen() {
     }
 
     if (showScreen) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()

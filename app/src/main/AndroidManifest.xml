@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IslamicApp">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.home.MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.IslamicApp" />
@@ -32,7 +32,7 @@
             android:name=".ui.hadith.volumn_detail.VolumeDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home.MainActivity"
+            android:name=".ui.supplications.detail.DuaDetails"
             android:exported="false" />
         <activity
             android:name=".ui.chapters.chapter_details.ChapterDetail"

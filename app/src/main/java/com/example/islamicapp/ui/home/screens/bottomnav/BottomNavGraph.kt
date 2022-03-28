@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.islamicapp.ui.chapters.MainChapterScreen
 import com.example.islamicapp.ui.hadith.MainHadithScreen
 import com.example.islamicapp.ui.home.screens.MainScreen
-import com.example.islamicapp.ui.qibla.QiblaScreen
+import com.example.islamicapp.ui.supplications.SupplicationScreen
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
@@ -37,7 +37,7 @@ fun BottomNavGraph(navController: NavHostController) {
 
         composable(route = BottomBarScreens.Supplications.route) {
 
-            QiblaScreen()
+            SupplicationScreen()
 
         }
 

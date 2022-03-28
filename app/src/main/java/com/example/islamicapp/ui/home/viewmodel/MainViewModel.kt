@@ -22,7 +22,7 @@ import com.example.islamicapp.response.local.book_response.Ayah
 import com.example.islamicapp.response.local.duaas.DuaaData
 import com.example.islamicapp.response.local.hadess_book_response.Hadith
 import com.example.islamicapp.response.local.names.NamesData
-import com.example.islamicapp.response.network.test.Test
+import com.example.islamicapp.response.network.prayer_timing.PrayerTiming
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.DataState
 import com.example.islamicapp.util.IslamicDateConverter
@@ -48,7 +48,7 @@ constructor(
     private val context: App
 ) : ViewModel() {
 
-    val calendar = Calendar.getInstance(TimeZone.getDefault())
+    private val calendar = Calendar.getInstance(TimeZone.getDefault())
 
     private var city: String? = null
 
@@ -94,7 +94,7 @@ constructor(
     private var _chapterNum = mutableStateOf(0)
     val chapterNum: State<Int> = _chapterNum
 
-    private var _randDua = mutableStateOf(DuaaData())
+    private var _randDua = mutableStateOf(DuaaData("","","",""))
     val randDua: State<DuaaData> = _randDua
 
     private var _duaType = mutableStateOf("")
@@ -322,7 +322,7 @@ constructor(
 
         when (val value = repo.response.value) {
 
-            is DataState.Success<Test> -> {
+            is DataState.Success<PrayerTiming> -> {
                 Timber.d("Success")
 
                 val prayerTiming = value.data.data
