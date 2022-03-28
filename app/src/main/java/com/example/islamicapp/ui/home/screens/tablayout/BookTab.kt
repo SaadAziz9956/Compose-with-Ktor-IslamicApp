@@ -118,7 +118,7 @@ fun BookTab(
                     bottom = 5.dp,
                     end = 10.dp
                 ),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.Start
         ) {
             Text(
                 text = textTranslated,

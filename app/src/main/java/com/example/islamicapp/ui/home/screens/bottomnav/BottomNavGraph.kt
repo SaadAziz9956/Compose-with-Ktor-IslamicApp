@@ -35,7 +35,7 @@ fun BottomNavGraph(navController: NavHostController) {
 
         }
 
-        composable(route = BottomBarScreens.Qibla.route) {
+        composable(route = BottomBarScreens.Supplications.route) {
 
             QiblaScreen()
 

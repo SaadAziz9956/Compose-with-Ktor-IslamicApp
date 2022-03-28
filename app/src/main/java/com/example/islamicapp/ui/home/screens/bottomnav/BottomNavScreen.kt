@@ -36,13 +36,13 @@ fun BottomNavScreen() {
 fun BottomBar(navController: NavHostController) {
 
     val screens = listOf(
-        BottomBarScreens.Home,
-
         BottomBarScreens.Quran,
 
         BottomBarScreens.Hadith,
 
-        BottomBarScreens.Qibla
+        BottomBarScreens.Home,
+
+        BottomBarScreens.Supplications
         )
 
     val navBacStackEntry by navController.currentBackStackEntryAsState()
@@ -72,7 +72,10 @@ fun RowScope.AddItems(
 ) {
 
     BottomNavigationItem(
-        modifier = Modifier.background(color = Color.White),
+        modifier = Modifier.background(color = Color.White)
+            .then(Modifier.weight(
+                1f
+            )),
         icon = {
             Icon(
                 painter = painterResource(id = screen.icon),

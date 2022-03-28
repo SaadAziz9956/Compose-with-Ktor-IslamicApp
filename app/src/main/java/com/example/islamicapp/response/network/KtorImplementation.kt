@@ -18,13 +18,18 @@ class KtorImplementation(
         }
     }
 
-    override suspend fun getPrayerTiming(long: Double?, lat: Double?): Test {
+    override suspend fun getPrayerTiming(
+        long: Double?,
+        lat: Double?,
+        currentYear: Int,
+        currentMonth: Int
+    ): Test {
         return client.get {
             url(PRAYER_TIMING_BASE_URL)
             parameter("latitude", lat)
             parameter("longitude", long)
-            parameter("month", 3)
-            parameter("year", 2022)
+            parameter("month", currentMonth)
+            parameter("year", currentYear)
         }
     }
 

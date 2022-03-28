@@ -27,10 +27,10 @@ sealed class BottomBarScreens(
         icon = R.drawable.ic_hadith
     )
 
-    object Qibla: BottomBarScreens(
-        route = "qibla",
-        title = "Qibla",
-        icon = R.drawable.ic_qibla
+    object Supplications: BottomBarScreens(
+        route = "supplications",
+        title = "Supplications",
+        icon = R.drawable.ic_dua
     )
 
 }

@@ -13,7 +13,7 @@ interface KtorInterface {
 
     suspend fun getResponse(int: String): ChapterDetailResponse
 
-    suspend fun getPrayerTiming(long: Double?, lat: Double?): Test
+    suspend fun getPrayerTiming(long: Double?, lat: Double?, currentYear: Int, currentMonth: Int): Test
 
     companion object {
         fun create(): KtorInterface {

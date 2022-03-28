@@ -23,7 +23,6 @@ import com.example.islamicapp.response.local.duaas.DuaaData
 import com.example.islamicapp.response.local.hadess_book_response.Hadith
 import com.example.islamicapp.response.local.names.NamesData
 import com.example.islamicapp.response.network.test.Test
-import com.example.islamicapp.room.dao.DuaDao
 import com.example.islamicapp.room.entity.PrayerTimingEntity
 import com.example.islamicapp.util.DataState
 import com.example.islamicapp.util.IslamicDateConverter
@@ -48,6 +47,8 @@ constructor(
     private val dbRepo: DatabaseRepository,
     private val context: App
 ) : ViewModel() {
+
+    val calendar = Calendar.getInstance(TimeZone.getDefault())
 
     private var city: String? = null
 
@@ -159,7 +160,11 @@ constructor(
 
                 val randomIndex = (0 until size).random()
 
-                _hadith.value = item.books[randomIndex].hadiths[randomIndex]
+                val size2 = item.books[randomIndex].hadiths.size
+
+                val randomIndex2 = (0 until size2).random()
+
+                _hadith.value = item.books[randomIndex].hadiths[randomIndex2]
             }
 
         }.launchIn(viewModelScope)
@@ -242,8 +247,6 @@ constructor(
 
             if (!list.isNullOrEmpty()) {
 
-                Timber.d("City : ${list[0].city}")
-
                 list.forEachIndexed { index, prayerTimingEntity ->
 
                     if (currentDate == prayerTimingEntity.gregorian) {
@@ -266,8 +269,6 @@ constructor(
 
 
         }.launchIn(viewModelScope)
-
-        val calendar = Calendar.getInstance()
 
         when (calendar[Calendar.DAY_OF_WEEK]) {
 
@@ -298,16 +299,22 @@ constructor(
 
     private suspend fun sendRequest() {
 
-
         city?.let {
             val dataByCity = dbRepo.getDataByCity(it)
             val dataByDate = dbRepo.getDataByDate(currentDate)
 
             if (dataByCity.isNullOrEmpty() || dataByDate.isNullOrEmpty()) {
                 Timber.d("Request sent")
+
+                val currentYear = calendar[Calendar.YEAR]
+
+                val currentMonth = calendar[Calendar.MONTH] + 1
+
                 repo.prayerTimingRequest(
                     long = long,
-                    lat = lat
+                    lat = lat,
+                    currentYear,
+                    currentMonth
                 )
             }
         }
@@ -352,7 +359,7 @@ constructor(
                 Timber.d("Exception: ${value.exception}")
             }
             DataState.Idle -> {
-                Timber.d("Idle")
+                Timber.d("Getting timing from Database")
             }
         }
     }
@@ -400,8 +407,6 @@ constructor(
 
         val tempTime = SimpleDateFormat("hh:mm:ss")
         val todayTempTime: String = tempTime.format(Date()).toString()
-
-        Timber.d("Today : $todayTempTime Tomorrow : $tomorrowTime")
 
         val todayTime = Calendar.getInstance()
         val currentTime = todayTime.timeInMillis
@@ -494,7 +499,6 @@ constructor(
 
     @SuppressLint("SimpleDateFormat")
     fun formatDate(time: String): String {
-        Timber.d("Format : $time")
         val format = SimpleDateFormat("HH:mm", Locale.getDefault())
         val date = format.parse(time)
         val format1 = Calendar.getInstance()
