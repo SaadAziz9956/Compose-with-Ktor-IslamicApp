@@ -1,6 +1,8 @@
 package com.example.islamicapp.ui.supplications.components
 
 import android.content.Intent
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.modifier.modifierLocalConsumer
@@ -33,22 +36,34 @@ fun CategoryColumn(item: Dua, index: Int) {
 
     val context = LocalContext.current
 
+    val animatedProgress = remember { Animatable(initialValue = 0f) }
+
+    LaunchedEffect(Unit) {
+        animatedProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(600)
+        )
+    }
+
+    val animationModifier = Modifier
+        .fillMaxWidth()
+        .padding(
+            top = 5.dp,
+            bottom = 5.dp
+        )
+        .background(
+            color = LightBackground,
+            shape = RoundedCornerShape(6.dp)
+        )
+        .alpha(animatedProgress.value)
+        .clickable {
+            context.startActivity(Intent(context, DuaDetails::class.java).also {
+                it.putExtra("DuaItem", item)
+            })
+        }
+
     Box(
-        Modifier
-            .fillMaxWidth()
-            .padding(
-                top = 5.dp,
-                bottom = 5.dp
-            )
-            .background(
-                color = LightBackground,
-                shape = RoundedCornerShape(6.dp)
-            )
-            .clickable {
-                context.startActivity(Intent(context, DuaDetails::class.java).also {
-                    it.putExtra("DuaItem", item)
-                })
-            }
+        modifier = animationModifier
     ) {
 
         Row(

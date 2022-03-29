@@ -1,6 +1,11 @@
 package com.example.islamicapp.ui.supplications
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
@@ -16,10 +21,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.islamicapp.R
 import com.example.islamicapp.ui.supplications.components.Category
+import com.example.islamicapp.ui.supplications.components.CategoryColumn
 import com.example.islamicapp.ui.supplications.viewmodel.SupplicationViewModel
 import com.example.islamicapp.ui.theme.IslamicAppTheme
-import kotlinx.coroutines.delay
+import com.example.islamicapp.ui.theme.MidGrey
 
+@SuppressLint("NewApi")
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SupplicationScreen() {
 
@@ -32,34 +40,45 @@ fun SupplicationScreen() {
             .padding(bottom = 55.dp)
             .fillMaxSize(1f)
             .padding(horizontal = 10.dp)
-            .verticalScroll(rememberScrollState())
     ) {
 
         Column {
 
-            Row(
-                Modifier
-                    .fillMaxWidth(),
-            ) {
+            LazyColumn(Modifier.fillMaxSize()) {
 
-                Text(
-                    text = "Supplications",
-                    fontSize = 25.sp,
-                    color = Color.Black,
-                    fontFamily = FontFamily(
-                        Font(
-                            R.font.ralewaymedium
+                item {
+                    Row(
+                        Modifier
+                            .fillMaxWidth(),
+                    ) {
+
+                        Text(
+                            text = "Supplications",
+                            fontSize = 13.sp,
+                            color = MidGrey,
+                            fontFamily = FontFamily(
+                                Font(
+                                    R.font.ralewaymedium
+                                )
+                            ),
+                            modifier = Modifier.padding(top = 30.dp,
+                                start = 5.dp)
                         )
-                    ),
-                    modifier = Modifier.padding(top = 20.dp)
-                )
 
-            }
+                    }
+                }
 
-            duas.forEach { supplication ->
+                duas.forEach {
 
-                Category(supplication)
+                    stickyHeader {
+                        Category(item = it)
+                    }
 
+                    itemsIndexed(it.duas) { index, item ->
+                        CategoryColumn(item, index)
+                    }
+
+                }
             }
 
         }

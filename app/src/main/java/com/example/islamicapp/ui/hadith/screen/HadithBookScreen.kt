@@ -39,7 +39,7 @@ fun HadithBookScreen(
                         }
                 ) {
 
-                    HadithColoumItem(item, index)
+                    HadithColumnItem(item, index)
 
                 }
             }

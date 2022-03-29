@@ -25,9 +25,10 @@ import com.example.islamicapp.ui.theme.LightBackground
 import com.example.islamicapp.ui.theme.MidGrey
 
 @Composable
-fun HadithColoumItem(item: HadeesBookItem, index: Int) {
+fun HadithColumnItem(item: HadeesBookItem, index: Int) {
 
     val animatedProgress = remember { Animatable(initialValue = 0f) }
+
     LaunchedEffect(Unit) {
         animatedProgress.animateTo(
             targetValue = 1f,

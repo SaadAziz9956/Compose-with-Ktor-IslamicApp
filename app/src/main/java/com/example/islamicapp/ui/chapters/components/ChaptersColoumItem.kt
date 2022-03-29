@@ -33,8 +33,8 @@ import com.example.islamicapp.ui.theme.MidGrey
 @Composable
 fun ColumnItem(item: Surah) {
 
-
     val animatedProgress = remember { Animatable(initialValue = 0f) }
+
     LaunchedEffect(Unit) {
         animatedProgress.animateTo(
             targetValue = 1f,
