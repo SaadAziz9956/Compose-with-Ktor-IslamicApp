@@ -46,4 +46,8 @@ class PrayerTimingRepository(
         Timber.d("Inserted in db : $insertPrayerTiming")
     }
 
+    fun resetValues() {
+        _response.value = DataState.Idle
+    }
+
 }

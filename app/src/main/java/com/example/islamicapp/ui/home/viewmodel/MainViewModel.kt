@@ -105,12 +105,13 @@ constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            Timber.d("INIT")
             getRandomAyah()
             getRandomHadith()
             getRandomName()
             getRandomDua()
             getCurrentLocation()
-            sendRequest()
+            sendLocationRequest()
             getTiming()
         }
     }
@@ -297,7 +298,7 @@ constructor(
         }
     }
 
-    private suspend fun sendRequest() {
+    private suspend fun sendLocationRequest() {
 
         city?.let {
             val dataByCity = dbRepo.getDataByCity(it)
@@ -351,6 +352,8 @@ constructor(
                     )
 
                     repo.insertInDB(entity)
+
+                    repo.resetValues()
                 }
 
             }
