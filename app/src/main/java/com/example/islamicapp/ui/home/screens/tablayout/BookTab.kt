@@ -14,15 +14,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.R
-import com.example.islamicapp.ui.home.viewmodel.MainViewModel
+import com.example.islamicapp.response.local.book_response.Ayah
+import com.example.islamicapp.ui.home.viewmodel.MainUiState
 import com.example.islamicapp.ui.theme.IslamicAppTheme
 
 @Composable
-fun BookTab(
-    mainViewModel: MainViewModel = viewModel()
-) {
+fun BookTab(uiState: MainUiState) {
     var text by remember {
         mutableStateOf("")
     }
@@ -31,11 +29,26 @@ fun BookTab(
         mutableStateOf("")
     }
 
-    val chapterName = mainViewModel.chapterName.value
+    var chapterNum by remember {
+        mutableStateOf("")
+    }
 
-    val chapterNum = mainViewModel.chapterNum.value
+    var chapterName by remember {
+        mutableStateOf("")
+    }
 
-    val verse = mainViewModel.verse.value
+    var verse by remember {
+        mutableStateOf(Ayah())
+    }
+
+    when (uiState) {
+        is MainUiState.HasData -> {
+            chapterName = uiState.chapterName.toString()
+            chapterNum = uiState.chapterNum.toString()
+            verse = uiState.verse!!
+        }
+        is MainUiState.NoData -> Unit
+    }
 
     verse.text?.let {
         text = it
@@ -131,12 +144,4 @@ fun BookTab(
         }
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPrevieww() {
-    IslamicAppTheme {
-        BookTab()
-    }
 }

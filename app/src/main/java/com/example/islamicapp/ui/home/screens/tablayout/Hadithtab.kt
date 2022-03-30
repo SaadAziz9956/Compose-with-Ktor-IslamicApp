@@ -15,18 +15,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.R
+import com.example.islamicapp.response.local.hadess_book_response.Hadith
+import com.example.islamicapp.ui.home.viewmodel.MainUiState
 import com.example.islamicapp.ui.home.viewmodel.MainViewModel
 
 @Composable
 fun HadithTab(
-    mainViewModel: MainViewModel = viewModel()
+    uiState: MainUiState
 ) {
 
     var text by remember {
         mutableStateOf("")
     }
 
-    val hadith = mainViewModel.hadith.value
+    var hadith  by remember {
+        mutableStateOf(Hadith("","",""))
+    }
+
+    when (uiState) {
+        is MainUiState.HasData -> {
+            hadith = uiState.hadith!!
+        }
+        is MainUiState.NoData -> Unit
+    }
 
     hadith.text.let {
         text = it

@@ -17,12 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.R
-import com.example.islamicapp.ui.home.viewmodel.MainViewModel
+import com.example.islamicapp.response.local.names.NamesData
+import com.example.islamicapp.ui.home.viewmodel.MainUiState
 import com.example.islamicapp.ui.theme.IslamicAppTheme
 
 @Composable
 fun NamesTab(
-    mainViewModel: MainViewModel= viewModel()
+    uiState: MainUiState
 ) {
 
     var englishNameMean by remember {
@@ -33,7 +34,16 @@ fun NamesTab(
         mutableStateOf("")
     }
 
-    val nameData = mainViewModel.name.value
+    var nameData by remember {
+        mutableStateOf(NamesData())
+    }
+
+    when (uiState) {
+        is MainUiState.HasData -> {
+            nameData = uiState.name!!
+        }
+        is MainUiState.NoData -> Unit
+    }
 
     nameData.meaning?.english?.let {
         englishNameMean = it
@@ -133,13 +143,5 @@ fun NamesTab(
             )
         }
 
-    }
-}
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    IslamicAppTheme {
-        NamesTab()
     }
 }

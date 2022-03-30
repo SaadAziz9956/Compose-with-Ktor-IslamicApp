@@ -3,7 +3,7 @@ package com.example.islamicapp.ui.home.screens.tablayout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -11,24 +11,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.islamicapp.R
-import com.example.islamicapp.ui.home.viewmodel.MainViewModel
-import com.example.islamicapp.ui.theme.IslamicAppTheme
+import com.example.islamicapp.response.local.duaas.DuaaData
+import com.example.islamicapp.ui.home.viewmodel.MainUiState
 
 @Composable
 fun DuasTab(
-    mainViewModel: MainViewModel = viewModel()
+    uiState: MainUiState
 ) {
 
-    val randDua = mainViewModel.randDua.value
+    var randDua by remember {
+        mutableStateOf(DuaaData("", "", "", ""))
+    }
 
-    val duaName = mainViewModel.duaName.value
-
-    val duaType = mainViewModel.duaType.value
+    var duaName by remember {
+        mutableStateOf("")
+    }
+    var duaType by remember {
+        mutableStateOf("")
+    }
+    when (uiState) {
+        is MainUiState.HasData -> {
+            randDua = uiState.randDua!!
+            duaName = uiState.duaName.toString()
+            duaType = uiState.duaType.toString()
+        }
+        is MainUiState.NoData -> Unit
+    }
 
     Column(modifier = Modifier.padding(horizontal = 15.dp)) {
 
@@ -172,12 +183,4 @@ fun DuasTab(
 
     }
 
-}
-
-@Preview
-@Composable
-fun DefaultPreviewDua() {
-    IslamicAppTheme {
-        DuasTab()
-    }
 }

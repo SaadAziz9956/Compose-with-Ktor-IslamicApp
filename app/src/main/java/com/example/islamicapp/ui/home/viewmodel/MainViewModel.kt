@@ -10,8 +10,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.text.format.DateFormat
 import android.widget.Toast
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,8 +26,7 @@ import com.example.islamicapp.util.DataState
 import com.example.islamicapp.util.IslamicDateConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -37,6 +34,94 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+sealed interface MainUiState {
+
+    val isLoading: Boolean
+    val errorMessages: String
+
+    /**
+     * There are no posts to render.
+     *
+     * This could either be because they are still loading or they failed to load, and we are
+     * waiting to reload them.
+     */
+    data class NoData(
+        override val isLoading: Boolean,
+        override val errorMessages: String,
+    ) : MainUiState
+
+    /**
+     * There are posts to render, as contained in [postsFeed].
+     *
+     * There is guaranteed to be a [selectedPost], which is one of the posts from [postsFeed].
+     */
+    data class HasData(
+        val prayerTiming: PrayerTimingEntity? = null,
+        val nextPrayer: String? = null,
+        val now: String? = null,
+        val islamicDate: String? = null,
+        val currentDay: String? = null,
+        val city: String? = null,
+        val verse: Ayah? = null,
+        val intent: Boolean? = null,
+        val hadith: Hadith? = null,
+        val chapterName: String? = null,
+        val name: NamesData? = null,
+        val chapterNum: Int? = null,
+        val randDua: DuaaData? = null,
+        val duaType: String? = null,
+        val duaName: String? = null,
+        override val isLoading: Boolean,
+        override val errorMessages: String,
+    ) : MainUiState
+}
+
+private data class MainViewModelState(
+    val prayerTiming: PrayerTimingEntity? = null,
+    val nextPrayer: String? = null,
+    val now: String? = null,
+    val islamicDate: String? = null,
+    val currentDay: String? = null,
+    val city: String? = null,
+    val verse: Ayah? = null,
+    val intent: Boolean? = null,
+    val hadith: Hadith? = null,
+    val chapterName: String? = null,
+    val name: NamesData? = null,
+    val chapterNum: Int? = null,
+    val randDua: DuaaData? = null,
+    val duaType: String? = null,
+    val duaName: String? = null,
+    val isLoading: Boolean = false,
+    val errorMessages: String = "",
+) {
+
+    /*
+     * Converts this [HomeViewModelState] into a more strongly typed [HomeUiState] for driving
+     * the ui.
+     */
+    fun toUiState(): MainUiState =
+        MainUiState.HasData(
+            prayerTiming = prayerTiming,
+            nextPrayer = nextPrayer,
+            now = now,
+            islamicDate = islamicDate,
+            currentDay = currentDay,
+            city = city,
+            verse = verse,
+            intent = intent,
+            hadith = hadith,
+            chapterName = chapterName,
+            name = name,
+            chapterNum = chapterNum,
+            randDua = randDua,
+            duaName = duaName,
+            duaType = duaType,
+            isLoading = isLoading,
+            errorMessages = errorMessages
+        )
+
+}
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 @HiltViewModel
@@ -58,50 +143,61 @@ constructor(
 
     private val currentDate = DateFormat.format("dd-MM-yyyy", Date()).toString()
 
-    private var _prayerTiming = mutableStateOf(PrayerTimingEntity(hijri = ""))
-    val prayerTiming: State<PrayerTimingEntity> = _prayerTiming
+    private val viewModelState = MutableStateFlow(MainViewModelState(isLoading = true))
 
-    private var _nextPrayer = mutableStateOf("")
-    val nextPrayer: State<String> = _nextPrayer
+    // UI state exposed to the UI
+    val uiState = viewModelState
+        .map { it.toUiState() }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            viewModelState.value.toUiState()
+        )
 
-    private var _now = mutableStateOf("")
-    val now: State<String> = _now
+//    private var _prayerTiming = mutableStateOf(PrayerTimingEntity(hijri = ""))
+//    val prayerTiming: State<PrayerTimingEntity> = _prayerTiming
+//
+//    private var _nextPrayer = mutableStateOf("")
+//    val nextPrayer: State<String> = _nextPrayer
+//
+//    private var _now = mutableStateOf("")
+//    val now: State<String> = _now
 
-    private var _islamicDate = mutableStateOf("Date time loading")
-    val islamicDate: State<String> = _islamicDate
+//    private var _islamicDate = mutableStateOf("Date time loading")
+//    val islamicDate: State<String> = _islamicDate
 
-    private var _currentDay = mutableStateOf("Today Day")
-    val currentDay: State<String> = _currentDay
+//    private var _currentDay = mutableStateOf("Today Day")
+//    val currentDay: State<String> = _currentDay
+//
+//    private var _city = mutableStateOf("finding city")
+//    val cityState: State<String> = _city
 
-    private var _city = mutableStateOf("finding city")
-    val cityState: State<String> = _city
-
-    private var _intent = mutableStateOf(false)
-    val intent: State<Boolean> = _intent
-
-    private var _verse = mutableStateOf(Ayah())
-    val verse: State<Ayah> = _verse
-
-    private var _hadith = mutableStateOf(Hadith("", "", ""))
-    val hadith: State<Hadith> = _hadith
-
-    private var _chapterName = mutableStateOf("")
-    val chapterName: State<String> = _chapterName
-
-    private var _name = mutableStateOf(NamesData())
-    val name: State<NamesData> = _name
-
-    private var _chapterNum = mutableStateOf(0)
-    val chapterNum: State<Int> = _chapterNum
-
-    private var _randDua = mutableStateOf(DuaaData("","","",""))
-    val randDua: State<DuaaData> = _randDua
-
-    private var _duaType = mutableStateOf("")
-    val duaType: State<String> = _duaType
-
-    private var _duaName = mutableStateOf("")
-    val duaName: State<String> = _duaName
+//    private var _intent = mutableStateOf(false)
+//    val intent: State<Boolean> = _intent
+//
+//    private var _verse = mutableStateOf(Ayah())
+//    val verse: State<Ayah> = _verse
+//
+//    private var _hadith = mutableStateOf(Hadith("", "", ""))
+//    val hadith: State<Hadith> = _hadith
+//
+//    private var _chapterName = mutableStateOf("")
+//    val chapterName: State<String> = _chapterName
+//
+//    private var _name = mutableStateOf(NamesData())
+//    val name: State<NamesData> = _name
+//
+//    private var _chapterNum = mutableStateOf(0)
+//    val chapterNum: State<Int> = _chapterNum
+//
+//    private var _randDua = mutableStateOf(DuaaData("","","",""))
+//    val randDua: State<DuaaData> = _randDua
+//
+//    private var _duaType = mutableStateOf("")
+//    val duaType: State<String> = _duaType
+//
+//    private var _duaName = mutableStateOf("")
+//    val duaName: State<String> = _duaName
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -118,7 +214,15 @@ constructor(
     private fun getRandomName() {
         val randomChapter = dbRepo.getRandomName()
         randomChapter.onEach {
-            _name.value = it
+
+            viewModelState.update { viewModelState ->
+
+                viewModelState.copy(
+                    name = it
+                )
+
+            }
+
         }.launchIn(viewModelScope)
     }
 
@@ -126,14 +230,22 @@ constructor(
         val randomDua = dbRepo.getRandomDua()
         randomDua.onEach { supplication ->
             supplication?.let {
-                _duaType.value = it.name
+
                 val size = it.duas.size
                 val randomIndex = (0 until size).random()
                 val dua = it.duas[randomIndex]
-                _duaName.value = dua.name
                 val nSize = dua.data.size
                 val nRandomIndex = (0 until nSize).random()
-                _randDua.value = dua.data[nRandomIndex]
+
+                viewModelState.update { viewModelState ->
+
+                    viewModelState.copy(
+                        duaType = it.name,
+                        duaName = dua.name,
+                        randDua = dua.data[nRandomIndex]
+                    )
+
+                }
             }
         }.launchIn(viewModelScope)
     }
@@ -141,11 +253,19 @@ constructor(
     private fun getRandomAyah() {
         val randomChapter = dbRepo.getRandomChapter()
         randomChapter.onEach {
+
             val size = it.ayahs.size
             val randomIndex = (0 until size).random()
-            _chapterName.value = it.englishName
-            _chapterNum.value = it.number
-            _verse.value = it.ayahs[randomIndex]
+
+            viewModelState.update { viewModelState ->
+
+                viewModelState.copy(
+                    chapterName = it.englishName,
+                    chapterNum = it.number,
+                    verse = it.ayahs[randomIndex]
+                )
+
+            }
         }.launchIn(viewModelScope)
     }
 
@@ -164,7 +284,14 @@ constructor(
 
                 val randomIndex2 = (0 until size2).random()
 
-                _hadith.value = item.books[randomIndex].hadiths[randomIndex2]
+                viewModelState.update { viewModelState ->
+
+                    viewModelState.copy(
+                        hadith = item.books[randomIndex].hadiths[randomIndex2],
+                    )
+
+                }
+
             }
 
         }.launchIn(viewModelScope)
@@ -184,7 +311,13 @@ constructor(
         ) {
             withContext(Dispatchers.Main) {
                 Timber.d("checkSelfPermission")
-                _intent.value = true
+                viewModelState.update { viewModelState ->
+
+                    viewModelState.copy(
+                        intent = true,
+                    )
+
+                }
             }
         } else {
             Timber.d("GetCity")
@@ -212,7 +345,13 @@ constructor(
                 try {
                     getCityFormLogLat(geocoder, bestLocation)
                     withContext(Dispatchers.Main) {
-                        _city.value = city as String
+                        viewModelState.update { viewModelState ->
+
+                            viewModelState.copy(
+                                city = city
+                            )
+
+                        }
                     }
                     Timber.d("City Name: $city")
                 } catch (e: Exception) {
@@ -273,26 +412,36 @@ constructor(
         when (calendar[Calendar.DAY_OF_WEEK]) {
 
             Calendar.SUNDAY -> {
-                _currentDay.value = "Sunday"
+                updateValue("Sunday")
             }
             Calendar.MONDAY -> {
-                _currentDay.value = "Monday"
+                updateValue("Monday")
             }
             Calendar.TUESDAY -> {
-                _currentDay.value = "Tuesday"
+                updateValue("Tuesday")
             }
             Calendar.WEDNESDAY -> {
-                _currentDay.value = "Wednesday"
+                updateValue("Wednesday")
             }
             Calendar.THURSDAY -> {
-                _currentDay.value = "Thursday"
+                updateValue( "Thursday")
             }
             Calendar.FRIDAY -> {
-                _currentDay.value = "Friday"
+                updateValue("Friday")
             }
             Calendar.SATURDAY -> {
-                _currentDay.value = "Saturday"
+                updateValue("Saturday")
             }
+
+        }
+    }
+
+    private fun updateValue(day: String) {
+        viewModelState.update { viewModelState ->
+
+            viewModelState.copy(
+                currentDay = day
+            )
 
         }
     }
@@ -435,8 +584,13 @@ constructor(
         val fajrNextDayTime = Calendar.getInstance()
         fajrNextDayTime.time = simpleDateFormat.parse(fajrNextDayWithDate)
 
-        _islamicDate.value =
-            IslamicDateConverter.islamicDateFormatChange(islamicDate)
+        viewModelState.update { viewModelState ->
+
+            viewModelState.copy(
+                islamicDate = IslamicDateConverter.islamicDateFormatChange(islamicDate)
+            )
+
+        }
 
         currentTime.let {
             when {
@@ -444,29 +598,29 @@ constructor(
 
                     when {
                         currentTime < fajrTime.timeInMillis -> {
-                            _nextPrayer.value = "Fajr - $fajr"
+                            updateNextPrayerValue("Fajr - $fajr")
                         }
                         currentTime < dhuhrTime.timeInMillis -> {
-                            _nextPrayer.value = "Dhuhr - $dhuhr"
+                            updateNextPrayerValue("Dhuhr - $dhuhr")
                         }
                         currentTime < asrTime.timeInMillis -> {
-                            _nextPrayer.value = "Asr - $asr"
+                            updateNextPrayerValue("Asr - $asr")
                         }
                         currentTime < maghribTime.timeInMillis -> {
-                            _nextPrayer.value = "Maghrib - $maghrib"
+                            updateNextPrayerValue("Maghrib - $maghrib")
                         }
                         currentTime < ishaTime.timeInMillis -> {
-                            _nextPrayer.value = "Isha - $isha"
+                            updateNextPrayerValue("Isha - $isha")
                         }
                         currentTime < fajrNextDayTime.timeInMillis -> {
-                            _nextPrayer.value = "Fajr - $fajr"
+                            updateNextPrayerValue("Fajr - $fajr")
                         }
                         else -> Unit
                     }
                 }
                 else -> {
                     if (currentTime < fajrTime.timeInMillis) {
-                        _nextPrayer.value = "Fajr - $fajrNextDay"
+                        updateNextPrayerValue("Fajr - $fajrNextDay")
                     }
                 }
             }
@@ -476,24 +630,44 @@ constructor(
         when {
             currentTime > fajrTime.timeInMillis && currentTime < sunRiseTime.timeInMillis -> {
                 Timber.d("Current TIme : $currentTime")
-                _now.value = "Fajr"
+                updateNowValue("Fajr")
             }
             currentTime > dhuhrTime.timeInMillis && currentTime < asrTime.timeInMillis -> {
-                _now.value = "Dhuhr"
+                updateNowValue("Dhuhr")
             }
             currentTime > asrTime.timeInMillis && currentTime < maghribTime.timeInMillis -> {
-                _now.value = "Asr"
+                updateNowValue("Asr")
             }
             currentTime > maghribTime.timeInMillis && currentTime < ishaTime.timeInMillis -> {
-                _now.value = "Maghrib"
+                updateNowValue("Maghrib")
             }
             currentTime > ishaTime.timeInMillis && currentTime < midNightTime.timeInMillis -> {
-                _now.value = "Isha"
+                updateNowValue("Isha")
             }
             currentTime > sunRiseTime.timeInMillis && currentTime < dhuhrTime.timeInMillis -> {
-                _now.value = "Sunrise"
+                updateNowValue("Sunrise")
             }
-            else -> _now.value = "Tahajud"
+            else -> updateNowValue("Tahajud")
+        }
+    }
+
+    private fun updateNowValue(time: String) {
+        viewModelState.update { viewModelState ->
+
+            viewModelState.copy(
+                now = time
+            )
+
+        }
+    }
+
+    private fun updateNextPrayerValue(time: String) {
+        viewModelState.update { viewModelState ->
+
+            viewModelState.copy(
+                nextPrayer = time
+            )
+
         }
     }
 
@@ -508,4 +682,3 @@ constructor(
     }
 
 }
-
