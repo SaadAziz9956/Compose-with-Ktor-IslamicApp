@@ -14,6 +14,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.islamicapp.App
 import com.example.islamicapp.repository.DatabaseRepository
@@ -294,9 +295,9 @@ constructor(
             Calendar.SATURDAY -> {
                 _currentDay.value = "Saturday"
             }
-
         }
     }
+
 
     private suspend fun sendLocationRequest() {
 
