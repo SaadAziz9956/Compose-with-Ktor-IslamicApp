@@ -21,7 +21,7 @@ import com.example.islamicapp.ui.theme.IslamicAppTheme
 
 @Composable
 fun BookTab(
-    mainViewModel: MainViewModel = viewModel()
+    mainViewModel: MainViewModel
 ) {
     var text by remember {
         mutableStateOf("")
@@ -131,12 +131,4 @@ fun BookTab(
         }
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPrevieww() {
-    IslamicAppTheme {
-        BookTab()
-    }
 }

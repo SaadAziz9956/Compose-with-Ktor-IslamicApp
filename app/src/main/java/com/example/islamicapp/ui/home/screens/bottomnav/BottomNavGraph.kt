@@ -13,7 +13,7 @@ import com.example.islamicapp.ui.supplications.SupplicationScreen
 import com.example.islamicapp.util.ProviderFactory
 
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
+fun BottomNavGraph(navController: NavHostController, providerFactory: ProviderFactory) {
 
     NavHost(
         navController = navController,
@@ -23,10 +23,10 @@ fun BottomNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreens.Home.route) {
 
             val homeViewModel: MainViewModel = viewModel(
-                factory = ProviderFactory()
+                factory = providerFactory
             )
 
-            MainScreen()
+            MainScreen(homeViewModel)
 
         }
 

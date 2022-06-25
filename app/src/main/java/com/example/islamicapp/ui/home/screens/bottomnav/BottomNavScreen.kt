@@ -17,16 +17,20 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.islamicapp.ui.theme.CardBackgroundGradientTwo
 import com.example.islamicapp.ui.theme.LightGrey
+import com.example.islamicapp.util.ProviderFactory
 
 @Composable
-fun BottomNavScreen() {
+fun BottomNavScreen(providerFactory: ProviderFactory) {
 
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomBar(navController) }
     ) {
 
-        BottomNavGraph(navController = navController)
+        BottomNavGraph(
+            navController = navController,
+            providerFactory
+        )
 
     }
 
@@ -43,7 +47,7 @@ fun BottomBar(navController: NavHostController) {
         BottomBarScreens.Home,
 
         BottomBarScreens.Supplications
-        )
+    )
 
     val navBacStackEntry by navController.currentBackStackEntryAsState()
 
@@ -72,10 +76,13 @@ fun RowScope.AddItems(
 ) {
 
     BottomNavigationItem(
-        modifier = Modifier.background(color = Color.White)
-            .then(Modifier.weight(
-                1f
-            )),
+        modifier = Modifier
+            .background(color = Color.White)
+            .then(
+                Modifier.weight(
+                    1f
+                )
+            ),
         icon = {
             Icon(
                 painter = painterResource(id = screen.icon),

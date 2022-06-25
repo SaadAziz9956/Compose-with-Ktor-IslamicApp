@@ -22,7 +22,7 @@ import com.example.islamicapp.ui.theme.IslamicAppTheme
 
 @Composable
 fun NamesTab(
-    mainViewModel: MainViewModel= viewModel()
+    mainViewModel: MainViewModel
 ) {
 
     var englishNameMean by remember {
@@ -133,13 +133,5 @@ fun NamesTab(
             )
         }
 
-    }
-}
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    IslamicAppTheme {
-        NamesTab()
     }
 }

@@ -19,7 +19,7 @@ import com.example.islamicapp.ui.permission.LocationPermissionActivity
 import com.example.islamicapp.ui.theme.AppBackground
 
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: MainViewModel) {
 
     var tabPage by remember {
         mutableStateOf(TabPage.Book)
@@ -28,8 +28,6 @@ fun MainScreen() {
     val scrollState = rememberScrollState(0)
 
     val context = LocalContext.current
-
-    val viewModel: MainViewModel = hiltViewModel()
 
     val nextPrayer = viewModel.nextPrayer.value
 
@@ -55,7 +53,7 @@ fun MainScreen() {
             .background(
                 color = AppBackground
             )
-            .padding(bottom =55.dp)
+            .padding(bottom = 55.dp)
             .verticalScroll(scrollState)
     ) {
 
@@ -77,16 +75,16 @@ fun MainScreen() {
 
             when (tabPage) {
                 TabPage.Book -> {
-                    BookTab()
+                    BookTab(viewModel)
                 }
                 TabPage.Hadith -> {
-                    HadithTab()
+                    HadithTab(viewModel)
                 }
                 TabPage.Names -> {
-                    NamesTab()
+                    NamesTab(viewModel)
                 }
                 TabPage.Dua -> {
-                    DuasTab()
+                    DuasTab(viewModel)
                 }
             }
 

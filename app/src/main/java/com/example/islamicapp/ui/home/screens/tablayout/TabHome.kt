@@ -1,16 +1,14 @@
 package com.example.islamicapp.ui.home.screens.tablayout
 
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
+import androidx.compose.foundation.background
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.example.islamicapp.R
 import com.example.islamicapp.ui.theme.AppBackground
 import com.example.islamicapp.ui.theme.LightGrey
-
 
 enum class TabPage(val icon: Int) {
     Book(R.drawable.ic_book),
@@ -41,7 +39,10 @@ fun TabHome(selectedTabIndex: Int, onSelectedTab: (TabPage) -> Unit) {
                     )
                 },
                 selectedContentColor = Color.Black,
-                unselectedContentColor = LightGrey
+                unselectedContentColor = LightGrey,
+                text = {
+                    Text(text = tabPages.name)
+                }
             )
         }
     }

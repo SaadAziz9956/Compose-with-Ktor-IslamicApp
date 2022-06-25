@@ -19,7 +19,7 @@ import com.example.islamicapp.ui.home.viewmodel.MainViewModel
 
 @Composable
 fun HadithTab(
-    mainViewModel: MainViewModel = viewModel()
+    mainViewModel: MainViewModel
 ) {
 
     var text by remember {

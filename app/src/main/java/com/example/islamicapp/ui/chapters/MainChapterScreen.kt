@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -53,6 +54,10 @@ fun MainChapterScreen() {
         else -> {}
     }
 
+    Scaffold() {
+
+    }
+
     LaunchedEffect(Unit) {
         delay(100)
         showScreen = true
@@ -86,9 +91,11 @@ fun MainChapterScreen() {
 
                 stickyHeader {
                     Box(
-                        Modifier.background(
-                            color = Color.White
-                        ).fillMaxWidth()
+                        Modifier
+                            .background(
+                                color = Color.White
+                            )
+                            .fillMaxWidth()
                     ) {
                         Text(
                             modifier = Modifier.padding(

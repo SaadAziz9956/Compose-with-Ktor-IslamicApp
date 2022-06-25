@@ -21,7 +21,7 @@ import com.example.islamicapp.ui.theme.IslamicAppTheme
 
 @Composable
 fun DuasTab(
-    mainViewModel: MainViewModel = viewModel()
+    mainViewModel: MainViewModel
 ) {
 
     val randDua = mainViewModel.randDua.value
@@ -172,12 +172,4 @@ fun DuasTab(
 
     }
 
-}
-
-@Preview
-@Composable
-fun DefaultPreviewDua() {
-    IslamicAppTheme {
-        DuasTab()
-    }
 }

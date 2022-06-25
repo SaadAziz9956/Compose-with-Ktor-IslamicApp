@@ -2,8 +2,11 @@ package com.example.islamicapp.di
 
 import android.content.Context
 import com.example.islamicapp.App
+import com.example.islamicapp.repository.DatabaseRepository
+import com.example.islamicapp.repository.PrayerTimingRepository
 import com.example.islamicapp.room.AppDatabase
 import com.example.islamicapp.room.dao.Daos
+import com.example.islamicapp.util.ProviderFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,6 +45,21 @@ object AppModule {
             database.hadithDao(),
             database.namesDao(),
             database.duaDao()
+        )
+    }
+
+
+    @Singleton
+    @Provides
+    fun providerFactory(
+        prayerTimingRepository: PrayerTimingRepository,
+        databaseRepository: DatabaseRepository,
+        context: App
+    ): ProviderFactory {
+        return ProviderFactory(
+            prayerTimingRepository,
+            databaseRepository,
+            context
         )
     }
 
